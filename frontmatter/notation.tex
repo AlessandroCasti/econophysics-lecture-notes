@@ -1,0 +1,106 @@
+\chapter*{Notation}
+\addcontentsline{toc}{chapter}{Notation}
+
+Stochastic processes, mathematical finance, and statistical physics each bring their own notational traditions, and this book inevitably inherits all three.
+Within each chapter every symbol is defined at first use and its meaning is unambiguous; across chapters, however, a few letters are unavoidably overloaded ($S$, $B$, $\sigma$, $\alpha$, $r$ being the main offenders).
+The tables below collect the recurring symbols, chapter by chapter, and flag the collisions explicitly.
+
+\subsection*{Probability and stochastic processes (Chapters 2--4)}
+
+\begin{center}
+\begin{tabular}{l p{10.2cm}}
+\hline
+$P_n(x_n,t_n;\dots;x_1,t_1)$ & joint probability density of order $n$ \\
+$P(x,t\mid x',t')$ & conditional (transition) probability density \\
+$\langle\,\cdot\,\rangle,\ \mathbb{E}[\,\cdot\,]$ & ensemble average (the two notations are used interchangeably) \\
+$\mathrm{Var}[\,\cdot\,],\ \mathrm{Cov}[\,\cdot\,]$ & variance and covariance \\
+$\mathcal{N}(m,\sigma^2)$ & Gaussian distribution of mean $m$ and variance $\sigma^2$ \\
+$a_1(x,t),\ a_2(x,t)$ & Kramers--Moyal coefficients: drift and diffusion \\
+$v,\ D$ & drift and diffusion when constant \\
+$L_{\mathrm{FP}}$ & Fokker--Planck operator \\
+$j(x,t),\ J(r)$ & probability current (flux) \\
+$\mathcal{L}_{\mathrm{OM}}$ & Onsager--Machlup Lagrangian \\
+$W(t)$ & Wiener process; $dW(t)$ its It\^o differential, $[dW]^2=dt$ \\
+$\xi(t)$ & white noise, $\xi = dW/dt$ in the distributional sense \\
+$a(x,t),\ b(x,t)$ & drift and noise amplitude of a generic It\^o SDE \\
+$\kappa,\ \tau=1/\kappa$ & restoring rate and relaxation time of the OU process \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection*{Derivatives and pricing (Chapter 5)}
+
+\begin{center}
+\begin{tabular}{l p{10.2cm}}
+\hline
+$S(t),\ S_t$ & spot price of the underlying stock \\
+$\mu,\ \sigma$ & historical drift (return rate) and volatility of the stock \\
+$r$ & risk-free interest rate (constant in this chapter) \\
+$X,\ T$ & strike price and maturity of an option \\
+$C,\ P,\ O$ & call, put, and generic option price \\
+$\{x\}_+$ & positive part, $\max\{x,0\}$ \\
+$\Pi(S,t)$ & cash position of the writer's hedged portfolio \\
+$\Delta,\ \Theta,\ \rho,\ \nu$ & the Greeks (hedge ratio, time decay, rate and vega sensitivities) \\
+$N(x)$ & cumulative standard normal distribution (\emph{not} the Gaussian density $\mathcal{N}$) \\
+$d_1,\ d_2$ & the two Black--Scholes arguments, $d_1 = d_2+\sigma\sqrt{T-t}$ \\
+$\mathbb{P},\ \mathbb{Q}$ & real-world and risk-neutral (martingale) probability measures \\
+$u,\ d,\ p$ & up/down factors and risk-neutral probability of the CRR tree \\
+$S_{i,j},\ C_{i,j}$ & stock and option values at tree node (time $i$, $j$ up-moves) \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection*{Interest rates and bonds (Chapter 6)}
+
+\begin{center}
+\begin{tabular}{l p{10.2cm}}
+\hline
+$B(r,t;T)$ & bond price; normalized so that $B(T)=1$ \\
+$R(t,T)$ & yield to maturity; its plot against $T$ is the yield curve \\
+$r(t)$ & spot rate, $r(t)=\lim_{T\to t}R(t,T)$ \\
+$f(r,t),\ S(r,t)$ & drift and diffusion of the rate SDE
+  (\emph{warning}: this $S$ is not the stock price of Chapter~5) \\
+$\mu(t,T),\ \sigma(t,T)$ & return and volatility of the bond
+  (\emph{warning}: not the stock parameters of Chapter~5) \\
+$q(r,t)$ & market price of risk \\
+$\alpha,\ \theta,\ \sigma$ & speed of mean reversion, long-run mean, and noise amplitude of the Vasi\v{c}ek/OU rate \\
+$\theta^* = \theta + \sigma q/\alpha$ & risk-adjusted long-run mean \\
+$A(t,T),\ B_0(t,T)$ & coefficient functions of the exponential-affine bond price
+  ($B_0$ is \emph{not} a bond price) \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection*{Advanced models (Chapter 7)}
+
+\begin{center}
+\begin{tabular}{l p{10.2cm}}
+\hline
+$\alpha$ & L\'evy index of a stable distribution, $0<\alpha\le2$
+  (\emph{warning}: unrelated to the Vasi\v{c}ek $\alpha$ of Chapter~6) \\
+$\delta$ & scale parameter of a stable law \\
+$\tilde\phi(k)$ & characteristic function (Fourier transform of the PDF) \\
+$a_N$ & rescaling factor of a sum of $N$ i.i.d.\ variables, $a_N=N^{1/\alpha}$ \\
+$P_>(x)$ & complementary cumulative distribution (CCDF) \\
+$z$ & normalized (standardized) log-return \\
+$f[Y],\ g[Y]$ & volatility function and vol-of-vol in stochastic volatility models \\
+$\rho$ & correlation of the two Wiener processes (leverage effect if $\rho<0$) \\
+$v=\sigma^2,\ \xi$ & variance and vol-of-vol in the Heston model \\
+$\lambda$ & price of volatility risk \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection*{Econophysics (Chapter 8)}
+
+\begin{center}
+\begin{tabular}{l p{10.2cm}}
+\hline
+$r$ & individual gross income (\emph{warning}: not the interest rate of Chapters 5--6) \\
+$A(r),\ B(r)$ & drift and diffusion of the income Fokker--Planck equation
+  (sign convention: $\frac{d}{dt}\langle r\rangle=-\langle A\rangle$) \\
+$T_r = B_0/A_0$ & effective temperature of income (Boltzmann regime) \\
+$\alpha = 1 + a/b$ & Pareto exponent of the income CCDF tail \\
+\hline
+\end{tabular}
+\end{center}

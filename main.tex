@@ -1,0 +1,86 @@
+% Compilation (XeLaTeX + Minion Pro):
+% xelatex main.tex
+% biber main
+% xelatex main.tex
+% xelatex main.tex
+% (or: latexmk -xelatex main.tex)
+
+\documentclass[12pt,a4paper,oneside]{book}
+
+\usepackage{csquotes}
+\usepackage{pgfplots}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{geometry}
+\geometry{a4paper, margin=25mm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{cancel}
+\usepackage{eurosym}
+\usepackage{subcaption}
+\usepackage[font=small]{caption}
+\usepackage{tikz}
+\usepackage{titlesec}
+
+% --- Fonts: Minion Pro via XeLaTeX -----------------------------------------
+% mathspec (loads fontspec) takes the math letters and digits from the text
+% font while keeping the Computer Modern math symbols.
+\usepackage{mathspec}
+\setmainfont{Minion Pro}
+\setmathsfont(Digits,Latin){Minion Pro}
+\usepackage{microtype}
+
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries}
+  {\normalsize\scshape\chaptertitlename~\thechapter}
+  {16pt}
+  {\Huge}
+
+% --- Hyperlinks in the book's dark green -----------------------------------
+\usepackage[colorlinks=true]{hyperref}
+\definecolor{bookgreen}{HTML}{154734}
+\hypersetup{allcolors=bookgreen}
+
+\usepackage[backend=biber,style=numeric,sorting=nyt]{biblatex}
+\addbibresource{bib/references.bib}
+
+% Allow a little extra interword stretch rather than letting lines
+% protrude into the right margin.
+\emergencystretch=1.5em
+
+\newcommand{\vect}[1]{\mathbf{#1}}
+
+\title{Econophysics --- Lecture Notes}
+\author{Alessandro Casti \and Giacomo Lavezzi}
+\date{\today}
+
+\begin{document}
+\frontmatter
+\maketitle
+\cleardoublepage
+
+\include{frontmatter/prefazione}
+
+\tableofcontents
+
+\include{frontmatter/notation}
+
+\mainmatter
+
+% Includi i capitoli
+\include{chapters/01-intro}
+\include{chapters/02-brownian_motion}
+\include{chapters/03-stochastic-processes}
+\include{chapters/04-stochastic-calculus}
+\include{chapters/05-financial-derivatives}
+\include{chapters/06-interest-rates}
+\include{chapters/07-advanced-models}
+\include{chapters/08-econophysics-pareto}
+
+\appendix
+\include{chapters/appendix-statmech}
+
+\backmatter
+\printbibliography
+
+\end{document}
