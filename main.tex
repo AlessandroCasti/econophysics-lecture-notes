@@ -22,12 +22,18 @@
 \usepackage{tikz}
 \usepackage{titlesec}
 
-% --- Fonts: Minion Pro via XeLaTeX -----------------------------------------
-% mathspec (loads fontspec) takes the math letters and digits from the text
-% font while keeping the Computer Modern math symbols.
-\usepackage{mathspec}
-\setmainfont{Minion Pro}
-\setmathsfont(Digits,Latin){Minion Pro}
+% --- Fonts via XeLaTeX -----------------------------------------------------
+% Use Minion Pro when it is installed. Otherwise fall back automatically to
+% Latin Modern, the standard LaTeX-style font, including its normal math fonts.
+\usepackage{fontspec}
+\IfFontExistsTF{Minion Pro}{%
+  \usepackage{mathspec}
+  \setmainfont{Minion Pro}
+  \setmathsfont(Digits,Latin){Minion Pro}
+}{%
+  % fontspec's built-in defaults use TeX's bundled Latin Modern files, so the
+  % fallback does not depend on a separately installed system font.
+}
 \usepackage{microtype}
 
 \titleformat{\chapter}[display]

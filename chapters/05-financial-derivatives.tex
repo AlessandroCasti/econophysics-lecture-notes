@@ -1058,11 +1058,13 @@ A \emph{barrier option} (of knock-out type) dies if the stock price ever crosses
 Set $C_{N,j}=\max(S_{N,j}-X,0)$ below the barrier and zero at or above it.
 Then modify the backward sweep at every earlier node,
 \begin{equation}
-i=N-1,\ldots,0,\quad j=0,\ldots,i:\quad
-\begin{cases}
+\begin{aligned}
+&i=N-1,\ldots,0,\qquad j=0,\ldots,i,\\
+&\begin{cases}
 S_{i,j} \ge U &\Longrightarrow\; C_{i,j} = 0, \\
-S_{i,j} < U &\Longrightarrow\; C_{i,j} = e^{-r\Delta t}\bigl\{p\, C_{i+1,j+1} + (1-p)\, C_{i+1,j}\bigr\},
+S_{i,j} < U &\Longrightarrow\; C_{i,j} = e^{-r\Delta t}\bigl\{p\, C_{i+1,j+1} + (1-p)\, C_{i+1,j}\bigr\}.
 \end{cases}
+\end{aligned}
 \end{equation}
 This tree checks the barrier only at its monitoring dates; continuous monitoring requires an additional crossing correction or a convergence analysis.\footnote{For knock-\emph{in} barrier options the logic is reversed: the option only comes alive once the barrier is crossed.}
 
