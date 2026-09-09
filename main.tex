@@ -56,11 +56,14 @@
 
 \begin{document}
 \frontmatter
+\hypersetup{pageanchor=false}
 \maketitle
+\hypersetup{pageanchor=true}
 \cleardoublepage
 
 \include{frontmatter/prefazione}
 
+\setcounter{tocdepth}{1}
 \tableofcontents
 
 \include{frontmatter/notation}
@@ -77,8 +80,6 @@
 \include{chapters/07-advanced-models}
 \include{chapters/08-econophysics-pareto}
 
-\appendix
-\include{chapters/appendix-statmech}
 
 \backmatter
 \printbibliography

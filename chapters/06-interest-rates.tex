@@ -16,7 +16,7 @@ A \emph{bond} is a debt instrument issued by a state or corporation (the \emph{w
 The holder lends capital, and in exchange acquires the right (a) to the reimbursement of the capital lent, (b) with an interest, (c) at a future date $T$, the \emph{maturity}.
 As with options, the price of the contract must be \emph{fair}, and the task of the chapter is to say what that means quantitatively.
 
-\subsection{Constant interest rate}
+\paragraph*{Constant interest rate.}
 
 We warm up by assuming $r = \text{const.}$, even though $r$ is in general stochastic.
 Let $B(t)$ be the value of the bond at time $t$.
@@ -111,11 +111,11 @@ The \emph{spot rate} $r(t)$ is the object our stochastic models will describe.
 
 The bond pricing model of Vasi\v{c}ek\cite{Vasicek1977} stands to bonds as Black--Scholes stands to options, and we will construct it along the same lines: hypotheses, hedged portfolio, no-arbitrage, PDE.
 
-\subsection{Hypotheses}
+\paragraph*{Hypotheses.}
 
 \begin{enumerate}[label=(\roman*)]
     \item There is market risk, but no credit risk.
-    \item The EMH holds, so the dynamics is It\^o (Markov), without memory.
+    \item The short rate is assumed to be a Markov It\^o diffusion.
     \item The no-arbitrage principle holds.
     \item The interest rate follows the SDE
     \begin{equation}\label{eq:rate-sde}
@@ -149,42 +149,30 @@ We now look for the analogue of the delta-hedged portfolio.
 There is an immediate obstruction: in Black--Scholes we hedged the option \emph{with the underlying stock}, but here the underlying is $r$, which cannot be held.
 The resolution is to hedge \emph{one bond with another}: bonds of different maturities respond to the same $r$, so a suitable combination can be made riskless.
 
-Concretely, consider a trader with capital $\Pi(t)$ who
-(a) buys a bond with maturity $T_1 = 1$ year, $B_1 = B(r,t;T_1)$, so that the wealth is $W = \Pi(t) + B_1$, exposed to the fluctuations of $r$ through $B_1$;
-(b) sells a second bond $B_2 = B_2(r,t;T_2)$ with $T_2 = 3$ years --- same underlying rate, hence stochastically correlated with the first;
-(c) so that the total wealth is $W(t) = B_2(t) = \Pi(t) + B_1(t)$.
-The portfolio is therefore
-\begin{equation}
-\Pi(t) = B_2(t) - B_1(t):
-\end{equation}
-long one maturity, short the other (the trader is simultaneously writer and holder).
+Let $B_i=B(r,t;T_i)$, $\mu_i=\mu(t,T_i)$ and $\sigma_i=\sigma(t,T_i)$.
+Choose holdings $h_1,h_2$ and position values $V_i=h_iB_i$ in a self-financing portfolio of value $\Pi=V_2-V_1$.
+Then
+\[
+ d\Pi=h_2\,dB_2-h_1\,dB_1
+ =(V_2\mu_2-V_1\mu_1)\,dt-(V_2\sigma_2-V_1\sigma_1)\,dW_t.
+\]
+The holdings are adjusted so that $V_2\sigma_2=V_1\sigma_1$.
+For $\sigma_1\ne\sigma_2$, the value and hedge conditions give
+\[
+ V_1=\frac{\Pi\sigma_2}{\sigma_1-\sigma_2},\qquad
+ V_2=\frac{\Pi\sigma_1}{\sigma_1-\sigma_2}.
+\]
+Consequently the riskless portfolio satisfies
+\[
+ d\Pi=\Pi\frac{\mu_2\sigma_1-\mu_1\sigma_2}{\sigma_1-\sigma_2}\,dt=r\Pi\,dt,
+\]
+and hence
+\[
+ \sigma_1(\mu_2-r)=\sigma_2(\mu_1-r).
+\]
+The adjustable quantities are the holdings, not the quoted bond prices.
+This is the same self-financing condition used in Chapter~5.
 
-Differentiating, and using for each bond its drift and volatility as defined above,
-\begin{equation}
-d\Pi(t) = dB_2(t) - dB_1(t) = \bigl\{B_2\,\mu(t,T_2) - B_1\,\mu(t,T_1)\bigr\}dt - \bigl\{B_2\,\sigma(t,T_2) - B_1\,\sigma(t,T_1)\bigr\}dW_t.
-\end{equation}
-By the no-arbitrage principle we eliminate the market risk, setting the coefficient of $dW_t$ to zero:
-\begin{equation}
-B_2\,\sigma(t,T_2) - B_1\,\sigma(t,T_1) = 0.
-\end{equation}
-Together with the budget constraint $\Pi = B_2 - B_1$, this fixes the sizes of the two positions:
-\begin{align}
-(a)\quad & (\Pi + B_1)\,\sigma(t,T_2) - B_1\,\sigma(t,T_1) = 0 &&\Longrightarrow\quad B_1 = \frac{\Pi\,\sigma(t,T_2)}{\sigma(t,T_1) - \sigma(t,T_2)}, \\[4pt]
-(b)\quad & B_2\,\sigma(t,T_2) - (B_2-\Pi)\,\sigma(t,T_1) = 0 &&\Longrightarrow\quad B_2 = \frac{\Pi\,\sigma(t,T_1)}{\sigma(t,T_1) - \sigma(t,T_2)}.
-\end{align}
-Substituting these optimal values back into $d\Pi$, the surviving deterministic part is
-\begin{equation}
-d\Pi(t) = \Pi\,\frac{\mu(t,T_1)\,\sigma(t,T_2) - \mu(t,T_2)\,\sigma(t,T_1)}{\sigma(t,T_1) - \sigma(t,T_2)}\, dt.
-\end{equation}
-
-The portfolio is now riskless, and the no-free-lunch argument of Chapter~5 applies verbatim: it must earn the risk-free rate,
-\begin{equation}
-\frac{d\Pi(t)}{\Pi(t)} = r\,dt = \frac{dB(t)}{B(t)},
-\end{equation}
-which, after clearing denominators, becomes
-\begin{equation}
-\sigma(t,T_1)\bigl[\mu(t,T_2) - r\bigr] = \sigma(t,T_2)\bigl[\mu(t,T_1) - r\bigr].
-\end{equation}
 Rearranging so that each maturity keeps to its own side,
 \begin{equation}\label{eq:vasicek-identity}
 \frac{\mu(t,T_1) - r}{\sigma(t,T_1)} = \frac{\mu(t,T_2) - r}{\sigma(t,T_2)},
@@ -192,7 +180,7 @@ Rearranging so that each maturity keeps to its own side,
 valid $\forall\, t \le \min(T_1, T_2)$ and, crucially, $\forall\, T_1, T_2$.
 This is the \textbf{Vasi\v{c}ek identity}, a dynamic identity of the model: the excess return per unit of volatility, $\frac{\mu - r}{\sigma}$, is the \emph{same for all bonds}, whatever their maturity --- a kind of separation of variables, with the maturity dropping out of the ratio.
 
-\subsection{The market price of risk}
+\paragraph*{The market price of risk.}
 
 Since the ratio in~\eqref{eq:vasicek-identity} does not depend on the maturity, it defines a function of $r$ and $t$ alone.
 We give it a name:
@@ -213,10 +201,12 @@ This is the \textbf{term structure equation}, the exact analogue of the Black--S
 Several remarks are in order before we solve it.
 First, note the structural difference from Black--Scholes: there the discounting rate $r$ on the right-hand side was a fixed constant, while here the $r$ multiplying $B$ is the fluctuating state variable itself --- the same symbol, two very different roles.
 Second, the equation is not yet specified: the functional forms of $f$ and $S$ must be modelled, and GBM will \emph{not} do --- an interest rate does not grow exponentially (if it did, no state could ever afford to issue bonds).
-Third, regarding $q(r,t) = \frac{\mu - r}{\sigma}$: when $\mu$ rises, $\sigma$ typically rises with it, so the ratio is roughly constant, $q\approx\text{const}$, a useful approximation in practice.
+Third, taking $q$ constant is an additional modelling assumption, not a consequence of the ratio defining it.
+With the bond convention $dB/B=\mu\,dt-\sigma\,dW$, the Girsanov kernel of Section~\ref{sec:rn-girsanov} is $\varphi=q$.
+Thus $dW=q\,dt+dW^Q$ and the short-rate drift under $Q$ is $f+Sq$.
 Finally, the Feynman--Kac formula of Chapter~5 offers an alternative representation of the solution,
 \begin{equation}
-B(r,t;T) = \hat{B}(T)\,\mathbb{E}\!\Bigl[\exp\Bigl\{-\int_t^T r(s)\,ds\Bigr\}\Bigr],
+B(r,t;T) = E^Q\!\Bigl[\exp\Bigl\{-\int_t^T r(s)\,ds\Bigr\}\,\Bigm|\,r(t)=r\Bigr],
 \end{equation}
 a discounted expectation as before --- except that now $r(s)$ is stochastic, so the discount factor sits \emph{inside} the expectation, integrated along each trajectory.
 One could evaluate this average directly, but we will follow the PDE route instead.
@@ -239,7 +229,8 @@ Its It\^o SDE is
 dr(t) = \alpha\bigl[\theta - r(t)\bigr]dt + \sigma\, dW_t,
 \end{equation}
 with $\alpha, \theta, \sigma > 0$ and $[\alpha] = [t]^{-1} = \tau^{-1}$.
-Here $\theta$ is the \emph{long-run mean} toward which the rate is pulled, and we note already that $\theta$ is \emph{not} simply the historical mean of the observed time series.\footnote{The parameter $\theta$ is determined from the market, not from historical data alone. See Section~\ref{sec:vasicek-calibration}.}
+Here $\theta$ is the \emph{long-run mean} toward which the rate is pulled, and we note already that $\theta$ is \emph{not} simply the historical mean of the observed time series.\footnote{Under the historical measure, $\theta$ is the long-run mean and can be estimated from sufficiently long rate data.
+The pricing parameter is the risk-adjusted mean $\theta^*$ defined below. See Section~\ref{sec:vasicek-calibration}.}
 
 Although the solution parallels Chapter~4, we spell it out, both because the nonzero mean changes the formulas and because the notes' derivation is compact.
 % CLAUDE NOTE: The notes' intermediate steps for the variable change are somewhat
@@ -249,7 +240,7 @@ Apply It\^o's lemma to the function $g(r,t) = r\, e^{\alpha t}$, for which $\par
 \begin{equation}
 dg(r,t) = \bigl[\alpha r\, e^{\alpha t} + \alpha(\theta - r)\, e^{\alpha t}\bigr]dt + \sigma\, e^{\alpha t}\, dW_t = \alpha\theta\, e^{\alpha t}\, dt + \sigma\, e^{\alpha t}\, dW_t;
 \end{equation}
-the mean-reverting drift has been absorbed, exactly as in Doob's transform, and only an inhomogeneous source survives.
+the mean-reverting drift has been absorbed, by the integrating factor, and only an inhomogeneous source survives.
 Integrating from $t$ to $T$ (where $T$ is a sufficiently long time),
 \begin{equation}
 r(T)\, e^{\alpha T} - r(t)\, e^{\alpha t} = \alpha\theta\int_t^T e^{\alpha s}\, ds + \sigma\int_t^T e^{\alpha s}\, dW_s,
@@ -258,24 +249,30 @@ and solving for $r(T)$,
 \begin{equation}\label{eq:ou-solution}
 r(T) = \theta\bigl(1 - e^{-\alpha(T-t)}\bigr) + r(t)\, e^{-\alpha(T-t)} + \sigma\, e^{-\alpha T}\int_t^T e^{\alpha s}\, dW_s.
 \end{equation}
-The anatomy of this solution is worth reading term by term: the initial rate decays away exponentially, the long-run mean $\theta$ fades in to replace it, and the noise accumulates with exponentially fading memory.
+The terms have a direct interpretation: the initial rate decays away exponentially, the long-run mean $\theta$ fades in to replace it, and the noise accumulates with exponentially fading memory.
 
 The moments follow at sight.
 The It\^o integral averages to zero, so
 \begin{equation}
-\mathbb{E}[r(T)] = \theta\bigl(1 - e^{-\alpha(T-t)}\bigr) + r(t)\, e^{-\alpha(T-t)} \;\xrightarrow{T-t \gg \tau}\; \theta,
+\mathbb{E}[r(T)\mid r(t)] = \theta\bigl(1 - e^{-\alpha(T-t)}\bigr) + r(t)\, e^{-\alpha(T-t)} \;\xrightarrow{T-t \gg \tau}\; \theta,
 \end{equation}
 and the mean converges to $\theta$ for long times --- the long-run economic average.
 By the It\^o isometry,
 \begin{equation}
-\mathrm{Var}[r(T)] = \sigma^2\, e^{-2\alpha T}\int_t^T e^{2\alpha s}\, ds = \frac{\sigma^2}{2\alpha}\bigl(1 - e^{-2\alpha(T-t)}\bigr) \;\xrightarrow{T-t \gg \tau}\; \frac{\sigma^2}{2\alpha},
+\mathrm{Var}[r(T)\mid r(t)] = \sigma^2\, e^{-2\alpha T}\int_t^T e^{2\alpha s}\, ds = \frac{\sigma^2}{2\alpha}\bigl(1 - e^{-2\alpha(T-t)}\bigr) \;\xrightarrow{T-t \gg \tau}\; \frac{\sigma^2}{2\alpha},
 \end{equation}
 so the fluctuations saturate rather than growing without bound.
 The process being Gaussian at all times,
 \begin{equation}
-\mathrm{PDF}\{r(t)\} \sim \mathcal{N}(r(t)) \;\xrightarrow{(T-t)\gg\tau}\; \mathcal{N}\!\Bigl(\theta,\, \frac{\sigma^2}{2\alpha}\Bigr),
+\begin{gathered}
+r(T)\mid r(t)\sim\mathcal N\!\left(\theta+(r(t)-\theta)e^{-\alpha(T-t)},\,
+\frac{\sigma^2}{2\alpha}(1-e^{-2\alpha(T-t)})\right),\\
+r(T)\mid r(t)\ \xrightarrow[T-t\to\infty]{\mathrm{law}}\
+\mathcal N\!\left(\theta,\frac{\sigma^2}{2\alpha}\right).
+\end{gathered},
 \end{equation}
-while for short times the mean expands as $\mathbb{E}[r(t)] \approx r + (\frac{\theta}{\sigma} - 1)\,\alpha(T-t) + \ldots$
+% Codex NOTE (2026-09-06): The previous theta/sigma expression is dimensionally inconsistent; expansion of the conditional OU mean gives alpha(theta-r).
+while for short times the mean expands as $\mathbb{E}[r(T)\mid r(t)=r] = r + \alpha(\theta-r)(T-t) + O((T-t)^2)$
 
 The qualitative behaviour has a name that finance uses constantly: \emph{mean reversion}.
 Reading the SDE over an infinitesimal step,
@@ -288,7 +285,7 @@ Taking the ensemble average of the increment,
 \mathbb{E}\bigl[r(t+dt) - r(t)\bigr] = \alpha\bigl[\theta - \mathbb{E}[r(t)]\bigr]\, dt,
 \end{equation}
 which identifies $\alpha$ as the \emph{speed of mean reversion}: it quantifies how fast the rate returns to $\theta$ after a fluctuation.
-In simulations one generates infinitely many trajectories and takes the ensemble average, recovering exactly this relaxation.
+In simulations one averages finitely many trajectories; this estimates the ensemble relaxation with sampling error.
 
 \begin{figure}[h!]
 \centering
@@ -306,44 +303,40 @@ In simulations one generates infinitely many trajectories and takes the ensemble
 The model has one well-known blemish.
 Being Gaussian with unbounded support, the rate can fluctuate to \emph{negative} values, especially at long times if $\theta$ is small.
 In principle this should not happen; in practice, remarkably, bonds with negative yields \emph{have} existed --- marginally around 2008, then systematically in Europe and Japan --- so the blemish is partly a feature.\footnote{Negative yields can be read as an insurance premium: investors accept a small guaranteed loss --- a contained loss, compared with other assets --- in exchange for safety; central-bank policy did the rest.
-The extreme case is Switzerland: the Swiss National Bank held its policy rate at $-0.75\%$ from 2015 to 2022 --- the deepest negative rate ever set by a central bank --- and for stretches of that period the \emph{entire} Swiss government yield curve, out to 50-year maturities, traded below zero.}
+For example, the Swiss National Bank set its sight-deposit rate at $-0.75\%$ in January 2015; longer-dated Swiss government bonds also traded at negative yields. See the SNB's October 2016 policy discussion\cite{SNB2016}.}
 % CLAUDE NOTE: The notes mention "2008" for negative rates; the phenomenon was
 % systematic during 2014-2021 in the eurozone, Switzerland, and Japan (footnote expanded
 % at the author's request, 2026-07-02).
 
-Still, negativity is not the standard, and an alternative exists: the CIR model \cite{CIR1985} (Cox--Ingersoll--Ross), the non-Gaussian variant defined in the notes by
+An alternative is the nonnegative CIR model\cite{CIR1985}.
+The construction in the handwritten notes starts from a Gaussian OU variable $x$, whose square is $r=x^2$:
 \begin{equation}\label{eq:cir-sde}
-d\sqrt{r} = -\gamma\sqrt{r}\, dt + \delta\, dW_t,
+ dx=-\gamma x\,dt+\delta\,dW_t.
 \end{equation}
-% CLAUDE NOTE: The notes write dr̃ = -γ√r dt + δ dW_t with PDF{√r(t)} ~ N(√r(t)), i.e. an
-% OU process for x=√r. The standard CIR model is dr = κ(θ-r)dt + σ√r dW_t, with the √r in
-% the diffusion term. The derivation below (from the notes) shows the two are related by Itô.
-where the Gaussian variable is $x := \sqrt{r}$, so that $\mathrm{PDF}\{\sqrt{r(t)}\} \sim \mathcal{N}(\sqrt{r(t)})$ and $f(x)=x^2=r$.
-What SDE does $r$ itself obey?
-By It\^o's formula applied to $f(x)=x^2$ along $dx = -\gamma x\, dt + \delta\, dW_t$,
-\begin{equation}
-df(x) = dx^2 = \bigl\{-\gamma x \cdot 2x + \tfrac{1}{2}\cdot 2\cdot\delta^2\bigr\}dt + 2\delta x\, dW_t = \bigl(\delta^2 - 2\gamma x^2\bigr)dt + 2\delta x\, dW_t,
-\end{equation}
-which, rewritten in terms of $r=x^2$, takes the form
-\begin{equation}
-dr(t) = \alpha\bigl[\theta - r(t)\bigr]dt + \sigma\sqrt{r(t)}\, dW_t,
-\end{equation}
-with $\alpha = 2\gamma$ and $\theta = \delta^2/(2\gamma)$: a mean-reverting drift again, but with a diffusion $\propto\sqrt{r}$ that switches off as $r\to0$ --- this is what keeps the rate positive.
-The process is of the Feller type.\footnote{For simulations one exploits the construction directly: $r$ is a sum of squared Gaussians, so $\mathrm{PDF}\{r(t)\} \sim \chi^2(r(t))$, the chi-squared distribution, whose support has a hard floor at zero.}
-% CLAUDE NOTE: the notes write "processo di Füller"; the name is William Feller, whose 1951
-% analysis of the square-root diffusion is why mathematicians call CIR the Feller process.
-% The related "Feller condition" 2κθ ≥ σ² guarantees that the rate never touches zero.
+The variable $x$ is signed; it cannot be identified with the nonnegative square root $\sqrt r$.
+It\^o's formula gives
+\[
+ dr=(\delta^2-2\gamma r)\,dt+2\delta x\,dW_t
+ =\alpha(\theta-r)\,dt+\sigma\sqrt r\,d\widetilde W_t,
+\]
+where $\alpha=2\gamma$, $\theta=\delta^2/(2\gamma)$, $\sigma=2\delta$, and $d\widetilde W_t=\operatorname{sgn}(x_t)dW_t$ (take the sign at zero to be $1$).
+The process $\widetilde W$ is Brownian, since its quadratic variation is $t$.
+This construction gives a special CIR parameter choice, not the general model.\footnote{The general CIR diffusion permits independent positive $\alpha,\theta,\sigma$.
+Starting from $r>0$, the Feller condition $2\alpha\theta\ge\sigma^2$ ensures that zero is not reached; otherwise zero can be reached, although the process remains nonnegative.
+The squared-OU construction above does not satisfy this condition.
+The finite-time transition law is a scaled noncentral chi-squared distribution, and the stationary law is Gamma, with shape $2\alpha\theta/\sigma^2$ and rate $2\alpha/\sigma^2$\cite{CIR1985,Bjork2020}.}
 
 \begin{figure}[h!]
 \centering
 \begin{tikzpicture}
     \draw[->] (0,0) -- (4,0) node[right] {$r(t)$};
-    \draw[->] (0,0) -- (0,2.5) node[above] {$\chi^2(r(t))$};
+    \draw[->] (0,0) -- (0,2.5) node[above] {$P_{\mathrm{stat}}(r)$};
     \draw[thick, blue, domain=0.05:3.8, samples=80]
-        plot (\x, {2*\x*exp(-\x)});
-    \node[font=\footnotesize] at (2.5, 1.8) {$\chi^2$ distribution};
+        plot (\x, {\x*exp(-\x)});
+    \node[font=\footnotesize] at (2.5, 1.8) {Gamma density};
 \end{tikzpicture}
-\caption{The stationary $\chi^2$-type distribution of the CIR rate: unlike the Vasi\v{c}ek Gaussian, its support is bounded below at zero, so negative rates never occur.}
+\caption{An illustrative stationary CIR Gamma density, with shape $2$ and rate $1$ in scaled rate units.
+These parameters describe a general CIR model, not the special squared-OU construction above.}
 \label{fig:cir-chi2}
 \end{figure}
 
@@ -356,7 +349,7 @@ so that $r$ is log-normal --- approximately what one sees in the data.
 \subsection{Solution of the term structure equation}\label{sec:vasicek-term-structure}
 
 We now return to the term structure equation~\eqref{eq:term-structure} and solve it with the OU specification.
-Substituting $f = \alpha(\theta-r)$ and $S=\sigma$, the drift correction combines with the market price of risk into
+Assuming constant $q$ and substituting $f = \alpha(\theta-r)$ and $S=\sigma$, the drift correction combines with the market price of risk into
 \begin{equation}
 f + S\,q = \alpha(\theta^* - r),
 \qquad
@@ -390,15 +383,15 @@ Now comes the decisive observation: this must hold \emph{for every value of $r$}
 The coefficient of $r$ and the $r$-independent part must therefore vanish \emph{separately} --- the PDE splits into two ordinary differential equations.
 
 Collecting the terms linear in $r$ (including the right-hand side),
-\begin{equation}
+\begin{equation*}
 -\dot{B}_0 + \alpha B_0 - 1 = 0 \quad\Longrightarrow\quad \dot{B}_0 = \alpha B_0 - 1,
-\tag{a}
-\end{equation}
+\qquad\text{(a)}
+\end{equation*}
 and collecting the constant terms,
-\begin{equation}
+\begin{equation*}
 \frac{\dot{A}}{A} - \alpha\theta^*\,B_0 + \frac{1}{2}\sigma^2\,B_0^2 = 0.
-\tag{b}
-\end{equation}
+\qquad\text{(b)}
+\end{equation*}
 
 Equation (a) is a linear first-order ODE.
 Its general solution is $B_0(t,T) = Ce^{\alpha t} + \frac{1}{\alpha}$, and imposing $B_0(T,T)=0$ fixes $C = -\frac{1}{\alpha}\,e^{-\alpha T}$, whence
@@ -414,7 +407,7 @@ With $B_0$ known, equation (b) determines $A$ by separation of variables:
 with $A(T,T) = 1$, i.e.\ $\ln A(T,T) = 0$.
 Integrating from $t$ to $T$,
 \begin{equation}
-\ln A(t,T) = \frac{1}{2}\int_t^T \bigl[\theta^*(s,T)\,\partial_s B_0^2 - \sigma^2\,B_0^2(s,T)\bigr]ds,
+\ln A(t,T) = \int_t^T \bigl[-\alpha\theta^* B_0(s,T) + \tfrac12\sigma^2 B_0^2(s,T)\bigr]ds,
 \end{equation}
 and carrying out the (elementary if tedious) integrals yields
 \begin{equation}\label{eq:vasicek-A}
@@ -443,8 +436,9 @@ while on the theoretical side the model predicts
 \begin{equation}
 R_v(r,t;T;\,\alpha,\theta^*,\sigma) = -\frac{1}{T-t}\,\ln P_v(r,t;T;\,\alpha,\theta^*,\sigma).
 \end{equation}
-There is no direct inversion from the historical time series of rates alone: in Bj\"ork's phrase, the model must be ``\emph{tirato fuori dal mercato}'' --- extracted from the market, not only from history.\cite{Bjork2009}
-% CLAUDE NOTE: "tirato fuori dal mercato" = extracted/calibrated from market data.
+The pricing mean $\theta^*$ must be inferred from market prices as well as historical dynamics.\footnote{The phrase ``tirato fuori dal mercato'' is a paraphrase in the handwritten lecture notes, not a verified quotation from Bj\"ork.
+For the distinction between historical dynamics and pricing dynamics, see Bj\"ork\cite{Bjork2020}, the chapters on short-rate models.}
+
 
 The calibration proceeds in two steps, each using the data best suited to it.
 First, one fits $\alpha$ and $\sigma$ --- the dynamical parameters --- from the historical time series of the spot rate $r(t)$, by a best fit of the observed relaxation and fluctuations.
@@ -452,23 +446,14 @@ Second, one fits $\theta^*$ --- the risk-adjusted level, invisible in the histor
 \begin{equation}
 R_{\text{emp}}(t,T) - R_{\text{the}}(r,t;T;\,\alpha,\sigma,\theta^*) = 0
 \end{equation}
-and solves for $\theta^*$.
-Figure~\ref{fig:yield-curve} sketches the typical situation: an upward-sloping empirical curve, with the fitted model interpolating through it.
+and fits $\theta^*$, generally by minimizing the discrepancies over maturities; one parameter need not match every quoted yield exactly.
+Figure~\ref{fig:yield-curve} illustrates an upward-sloping model curve with synthetic observations; it is not an empirical calibration.
 
 \begin{figure}[h!]
 \centering
-\begin{tikzpicture}
-    \draw[->] (0,0) -- (6,0) node[right] {Maturity (years)};
-    \draw[->] (0,0) -- (0,3) node[above] {$R(t,T)$};
-    \draw[thick, blue, dashed, domain=0.3:5.5, samples=50]
-        plot (\x, {2.5 - 1.5*exp(-0.5*\x)});
-    \foreach \x in {0.5, 1, 1.5, 2, 2.5, 3, 4, 5} {
-        \fill[blue] (\x, {2.5 - 1.5*exp(-0.5*\x) + 0.1*rand}) circle (2pt);
-    }
-    \node[font=\footnotesize] at (0.3,0.3) {1\%};
-    \node[font=\footnotesize] at (0.3,2.2) {5\%};
-\end{tikzpicture}
-\caption{Calibration on the yield curve: empirical yields at the quoted maturities (dots) and the fitted Vasi\v{c}ek curve $R_{\text{the}}$ (dashed). The fit of the curve determines the risk-adjusted mean $\theta^*$.}
+\includegraphics[width=0.72\textwidth]{images/vasicek_yield_review.pdf}
+\caption{Illustrative Vasi\v{c}ek yield curve ($r=1\%$, $\alpha=0.4$, $\theta^*=4\%$, $\sigma=1\%$ in annual units), with synthetic perturbed points.
+No market data were fitted.}
 \label{fig:yield-curve}
 \end{figure}
 

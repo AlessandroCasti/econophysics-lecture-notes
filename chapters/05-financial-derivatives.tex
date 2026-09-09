@@ -33,29 +33,26 @@ First, the spot price is \emph{unique}: at any given time there is a single pric
 Second, it is a price of \emph{equilibrium}: it arises from the matching of supply and demand, i.e.\ from the meeting of the best ask and the best bid, with a bid--ask spread $\Delta(\text{ask},\,\text{bid})\to 0$.
 In reality $\Delta>0$, because of transaction costs and related frictions, but the idealization is a good one for liquid markets.
 
-Under what conditions does such an equilibrium price exist at all?
-The classical answer requires the market to be \emph{atomistic} --- no single agent has a large influence --- and to satisfy three structural conditions.
-There must be \emph{perfect competition and information}: entry and exit are free, and all participants know everything, instantly.
-There must be \emph{no arbitrage}: no free profits exist, and any asymmetry of information is resolved immediately.
-And the market must be \emph{complete}: the assets already present span the entire space of probabilities, so that the payoff of any new asset can be replicated with existing ones.
-When these conditions hold, the \emph{Arrow--Debreu} model applies, and one can prove that a system of equilibrium prices exists.
-In such a market the gain available to an investor is the \emph{interest rate}, plus a premium for bearing \emph{risk} --- a decomposition that will guide us throughout this chapter.
-
+The equilibrium and pricing assumptions must be distinguished.
+In an Arrow--Debreu economy, equilibrium existence requires assumptions on preferences, endowments and production.
+For the derivative-pricing arguments below, no arbitrage and replication are the relevant conditions: completeness means that the specified contingent payoffs can be replicated using traded assets.
+Neither condition implies that information asymmetries disappear immediately.
+Expected returns may contain compensation for risk as well as the risk-free rate.
 
 \section{Risk and the Efficient Market Hypothesis}
 
-\subsection{Types of risk}
+\paragraph*{Types of risk.}
 
 Since risk is what one is paid to bear, we should say what kinds there are.
 Financial risk is traditionally classified into three categories.
-\emph{Operational risk} covers human errors, computer crashes, and similar accidents of implementation --- a category whose weight has grown with automation: today some $60$--$75\%$ of all transactions worldwide are executed by algorithmic trading, much of it speculative high-frequency trading.
+\emph{Operational risk} covers human errors, computer crashes, and similar accidents of implementation --- a category whose weight has grown with automation: the course slides quote an undated $60$--$75\%$ algorithmic-trading share, without specifying a market or volume measure; it should not be read as a verified current worldwide statistic.
 % CLAUDE NOTE: the algorithmic-trading figure is from the course slides
 % (Mercati & Strumenti Finanziari), added 2026-07-06.
 \emph{Credit risk} is the risk that the counterparty does not honour the obligations of the contract --- the risk of insolvency.
 \emph{Market risk}, finally, is the one that will concern us: the random fluctuation of prices themselves, caused partly by the internal dynamics of supply and demand, partly by exogenous factors (politics, disasters, \ldots), and partly by psychological factors --- imitation, panic --- whose study belongs to \emph{behavioural economics}.
 The Black--Scholes theory we develop below deals with market risk only; credit risk is assumed away, an assumption whose limits became painfully visible in 2008.
 
-\subsection{The Efficient Market Hypothesis}
+\paragraph*{The Efficient Market Hypothesis.}
 
 The fundamental question, on which the applicability of everything we have built so far depends, is this:
 
@@ -76,20 +73,13 @@ Figure~\ref{fig:djia} shows why the question is not rhetorical: the trajectory o
 \label{fig:djia}
 \end{figure}
 
-If prices carry memory, the Fokker--Planck machinery of Chapter~3 does not apply, and neither do the SDE models of Chapter~4.
-The Markov property holds only if the \emph{Efficient Market Hypothesis} (EMH) does.
-The EMH, formulated by Fama in 1970\cite{Fama1970}, states that the market reflects fully and instantaneously all available information: whatever can be known about an asset is already incorporated in its current price.
-If this is true, the past adds nothing to the present --- which is precisely the Markov property.
-The hypothesis carries several implications: information must be instantly and freely available to all agents (only the present matters); the market must be \emph{liquid}, so that anyone can buy and sell easily; and transaction costs must be negligible.
-Assembling the pieces, we can summarize the structural assumptions of this chapter in a single line:
-\begin{equation}
-\text{EMH} + \text{no arbitrage} + \text{completeness} \;=\; \text{Arrow--Debreu}.
-\end{equation}
-The EMH is the hypothesis that mathematical finance later made rigorous in the fundamental theorems of asset pricing (Section~\ref{sec:rn-girsanov}); and if the market is efficient, the economically rational standard model for asset prices is Samuelson's geometric Brownian motion --- work recognized with the 1970 Nobel Prize in Economics.
-% CLAUDE NOTE: the FTAP remark and the Samuelson Nobel mention follow the course slides
-% (Mercati & Strumenti Finanziari), added 2026-07-06.
-Whether real markets satisfy the EMH is an empirical question --- and the answer, as we shall see in Section~\ref{sec:gbm-limits} and again in Chapter~7, is ``only approximately''.
-
+The EMH, formulated by Fama\cite{Fama1970}, concerns how prices reflect a specified information set.
+The Markov property concerns the conditional law of future states given the past.
+These are different assertions: market efficiency does not imply a scalar Markov price process, and the Markov property does not imply market efficiency.
+Likewise, the fundamental theorems of asset pricing concern no arbitrage and martingale measures, not a proof of the EMH (Section~\ref{sec:rn-girsanov}).
+We assume a Markov GBM as a tractable stock-price model, rather than as a consequence of those theorems.
+A non-Markov observed price can also be part of a larger Markov state, as in stochastic-volatility models.
+Whether a chosen model describes real returns is an empirical question, taken up in Chapter~7.
 
 \section{Financial assets}
 
@@ -112,7 +102,7 @@ A \emph{portfolio} is simply a weighted collection of assets held together, and 
 Mixing imperfectly correlated assets therefore reduces risk at no cost in average return; the catch, to which we return in Chapter~7, is that in a crisis the correlations rise and the $\sqrt{N}$ protection evaporates precisely when it is needed.
 % CLAUDE NOTE: the diversification paragraph was added for readers new to finance at the
 % author's request (2026-07-06).
-To appreciate the scale of all this: the total value of global financial assets is approximately \$461 trillion, against a world GDP of roughly \$100 trillion.
+To appreciate the scale of all this: the handwritten notes quote about \$461 trillion of global financial assets and roughly \$100 trillion of annual world GDP, without a reference year; these are undated lecture estimates (a stock and an annual flow).
 Finance is not a small correction to the real economy; by market value it is several times larger.
 
 
@@ -143,7 +133,7 @@ O(S,t) = C_{\text{BS}}(S,t) \quad \forall\, t \le T.
 \end{equation}
 Solving this problem is the achievement of Black and Scholes; before getting there, we need to understand what an option is worth in the one situation where no theory is required, namely \emph{at maturity}.
 
-\subsection{Call option}
+\paragraph*{Call option.}
 
 Consider first the hedging use of a call, and let us put numbers on it, because the insurance logic is easiest to absorb on a concrete case.
 % CLAUDE NOTE: the numerical example was added for readers new to finance at the
@@ -210,7 +200,7 @@ For \emph{exotic} options the payoff involves the whole price history; in the \e
 \end{equation}
 and for such contracts no closed formula exists --- one resorts to numerical (Monte Carlo) simulations.
 
-\subsection{The no-arbitrage argument}
+\paragraph*{The no-arbitrage argument.}
 
 The terminal price $S_T$ is a stochastic process --- but which one, and priced how?
 We will model it with the geometric Brownian motion of Chapter~4; but before any model, a purely logical argument already pins down the value of the option \emph{at maturity}.
@@ -246,7 +236,7 @@ Splitting $[0,t]$ into $m$ steps of length $t/m$ and reinvesting the accrued int
 \begin{equation}
 S_t = S_0\Bigl(1 + \frac{r\,t}{m}\Bigr)^m,
 \end{equation}
-and in the limit of continuous reinvestment, $m\to\infty$ (with $r$ small, so that $r\,t\ll 1$),
+and in the limit of continuous reinvestment, $m\to\infty$ (for fixed $r$ and $t$),
 \begin{equation}
 S_t \longrightarrow S_0\, e^{r\,t},
 \end{equation}
@@ -257,7 +247,7 @@ The adjective \emph{risk-free} deserves a comment.
 It means a guaranteed return with zero credit risk --- and it is, of course, an abstraction.
 Even banks deemed ``too big to fail'' can fail, as the crisis of 2008 (and the state-financed rescues that followed) made clear; and the rate $r$ itself is not constant in time but fluctuates, following its own SDE $r(t)\to dr(t)$ with unknown future values --- the subject of Chapter~6.
 Can one at least find a good \emph{proxy} for the ideal risk-free rate?
-In practice, yes: the spot rate of AAA-rated government bonds (USA, Germany) with short maturity, between one and three months, whose default risk is negligible.
+In practice, yes: rates on high-grade government bills with short maturity, between one and three months, whose default risk is negligible.
 This identification gives the initial condition $dB_t = r\, B_t\, dt$ for the riskless asset, and hence, in the absence of risk,
 \begin{equation}
 dS_t = r\, S_t\, dt \quad\Longrightarrow\quad S_t = S_0\, e^{r\,t}.
@@ -280,11 +270,11 @@ The deterministic part of the price dynamics becomes
 dS_t = S_t\,\mu\, dt,
 \end{equation}
 formally identical to the bank account but with $\mu$ in place of $r$.
-Why would anyone accept the risk unless $\mu > r$?
-They would not: the return must exceed the risk-free rate, otherwise it would be more convenient to leave the money in the bank, and the excess $\mu - r$ is called the \emph{risk premium}.
+An expected excess return may compensate investors for risk, but $\mu>r$ is not a mathematical requirement of GBM or no arbitrage.
+The difference $\mu-r$ is called the \emph{risk premium}; its sign is not fixed by the model.
 
 The second ingredient is the risk itself.
-By the EMH, information and transactions change the price instantaneously and unpredictably; this contributes a stochastic term $\sigma\, S_t\, dW_t$, where $\sigma$ is the \emph{historical volatility}, with the meaning of an instantaneous standard deviation.
+The model represents unpredictable price changes through a stochastic term $\sigma\, S_t\, dW_t$, where $\sigma$ is the \emph{historical volatility}, with the meaning of an instantaneous standard deviation.
 Assembling the two pieces,
 \begin{equation}\label{eq:gbm-sde}
 dS_t = \mu\, S_t\, dt + \sigma\, S_t\, dW_t, \qquad \mu\in\mathbb{R},\; \sigma\in\mathbb{R}^+,
@@ -292,12 +282,12 @@ dS_t = \mu\, S_t\, dt + \sigma\, S_t\, dW_t, \qquad \mu\in\mathbb{R},\; \sigma\i
 which is precisely the SDE of \emph{Geometric Brownian Motion} (GBM), solved in Chapter~4.
 The stock price, in this model, is a bank account whose interest rate has been made noisy.
 
-\subsection{Log-returns}
+\paragraph*{Log-returns.}
 
 The financially meaningful quantity is not the absolute change $dS_t$ but the \emph{percentage} return $dS_t/S_t$, which is adimensional --- it treats a 10\,\euro{} stock and a 1000\,\euro{} one on the same footing.
 By It\^o's lemma applied to $\ln S_t$ (Chapter~4),
 \begin{equation}
-d\ln S_t = \Bigl(\mu\,\frac{S_t}{S_t}\frac{1}{S_t} - \frac{1}{2}\,\sigma^2\,\frac{S_t^2}{S_t^2}\frac{1}{S_t^2}\Bigr)\!dt + \sigma\,\frac{S_t}{S_t}\,\frac{1}{S_t}\,dW_t
+d\ln S_t = \Bigl(\mu S_t\,\frac{1}{S_t} + \frac{1}{2}\sigma^2 S_t^2\,\frac{-1}{S_t^2}\Bigr)\!dt + \sigma S_t\,\frac{1}{S_t}\,dW_t
 = \Bigl(\mu - \frac{\sigma^2}{2}\Bigr)dt + \sigma\, dW_t,
 \end{equation}
 % CLAUDE NOTE: The notes write this via the Itô lemma with the generic partials;
@@ -322,7 +312,7 @@ so the PDF of the log-returns is Gaussian --- a prediction we will test against 
 \section{The log-normal distribution}\label{sec:log-normal}
 
 If the log-returns are Gaussian, what is the distribution of the price itself?
-One could attack the Fokker--Planck equation for $P(S,t \mid S_0,t_0)$ directly, but it is far more complicated than the one for $P(\ln S_t \mid \ln S_0, t_0)$, because $\ln S_t$ is the variable that diffuses Gaussianly; the smart move is to change variables in the probability density.
+One could attack the Fokker--Planck equation for $P(S,t \mid S_0,t_0)$ directly, but it is far more complicated than the one for $P(\ln S_t \mid \ln S_0, t_0)$, because $\ln S_t$ is the variable that diffuses Gaussianly; one can change variables in the probability density.
 
 Let $P(\ln S_t \mid \ln S_0, t_0) := P(\ln S_t)$ be the Gaussian density of the logarithm; its normalization reads
 \begin{equation}
@@ -357,8 +347,8 @@ The financial reading is worth remembering: most trajectories end up below the a
     \draw[->] (0,0) -- (0,3.2) node[above] {$P_{\ln}(S_t)$};
     \draw[thick, blue, domain=0.15:5, samples=100]
         plot (\x, {2.8*exp(-0.5*(ln(\x)-0.3)^2/0.25)/(\x*sqrt(2*3.14159*0.25))});
-    \draw[dashed, gray] (0.95,0) -- (0.95,2.8) node[above, black, font=\footnotesize] {mode};
-    \draw[dashed, gray] (1.55,0) -- (1.55,1.7) node[above, black, font=\footnotesize] {mean};
+    \draw[dashed, gray] (1.0513,0) -- (1.0513,2.8) node[above, black, font=\footnotesize] {mode};
+    \draw[dashed, gray] (1.5296,0) -- (1.5296,1.7) node[above, black, font=\footnotesize] {mean};
 \end{tikzpicture}
 \caption{The log-normal density of the price $S_t$: right-skewed, with the mode below the mean. Small gains are typical; large gains are rare but heavy.}
 \label{fig:lognormal}
@@ -367,11 +357,11 @@ The financial reading is worth remembering: most trajectories end up below the a
 
 \section{Limits of the GBM model}\label{sec:gbm-limits}
 
-Before building an entire pricing theory on the GBM, intellectual honesty requires listing what is known to be wrong with it.
+Before using GBM for pricing, we examine its empirical limitations.
 Three questions summarize the situation.
 \begin{enumerate}
     \item \emph{Do prices really follow a Markov process?}
-    This is equivalent to asking whether the EMH holds --- and the honest answer is: not really.
+    This is a modelling question distinct from whether the EMH holds.
     Markets digest information quickly, but not instantaneously, and traces of memory remain.
 
     \item \emph{Is the distribution of log-returns Gaussian at every time scale?}
@@ -379,17 +369,17 @@ Three questions summarize the situation.
     \begin{equation}
     \mathrm{PDF}\!\Bigl[\ln\frac{S(t+\Delta t)}{S(t)}\Bigr] = \mathcal{N} \quad \forall\, t\ ?
     \end{equation}
-    For $\Delta t$ of a month or longer the Gaussian is a fair description (this was Samuelson's defence of the model), but at high frequencies --- daily, and today down to seconds --- it fails visibly: the empirical distribution exhibits \emph{fat tails}, with extreme events far more probable than any Gaussian allows.
+    At longer horizons Gaussian approximations can improve, but there is no universal one-month threshold; but at high frequencies --- daily, and today down to seconds --- it fails visibly: the empirical distribution exhibits \emph{fat tails}, with extreme events far more probable than any Gaussian allows.
     Chapter~7 is devoted to this discrepancy.
 
     \item \emph{Is the volatility constant?}
     The model predicts $\mathrm{s.d.}[\ln r(\Delta t)] = \sigma\sqrt{\Delta t}$ with a fixed $\sigma$.
-    The data say no: $\sigma$ itself depends on time (Engle), and quiet periods alternate with turbulent ones --- the phenomenon of \emph{volatility clustering}, also taken up in Chapter~7.
+    The data say no: $\sigma$ itself depends on time (Engle\cite{Engle1982}), and quiet periods alternate with turbulent ones --- the phenomenon of \emph{volatility clustering}, also taken up in Chapter~7.
     % CLAUDE NOTE: the notes write "(Engls)"; the intended reference is Robert F. Engle,
     % whose ARCH models of time-varying volatility earned the 2003 Nobel Prize in Economics.
 \end{enumerate}
-One can generalize the model to address each failure, and Chapter~7 will do so; but every generalization must be solved numerically.
-The GBM is the only model of its family that is analytically solvable, and this --- as much as its economic plausibility --- explains its enduring centrality.
+One can generalize the model to address these failures, as Chapter~7 illustrates.
+Some alternatives also have analytic or transform solutions; the simplicity of the GBM explains much of its continuing use.
 
 
 \section{The Black--Scholes equation}\label{sec:black-scholes}
@@ -403,11 +393,11 @@ Given the terminal payoff $C(S_T, t=T)=\{S_T-X\}_+$, the PDE propagates the valu
 The derivation rests on seven hypotheses, which we number for later reference.
 \begin{enumerate}[label=\roman*)]
     \item The only risk is \emph{market risk} (no credit risk); price fluctuations are driven by supply and demand.
-    \item The \textbf{EMH} holds (Markov property), and the stock follows a GBM:
+    \item The stock is assumed to follow the Markov GBM:
     \begin{equation}
     dS_t = \mu\, S_t\, dt + \sigma\, S_t\, dW_t.
     \end{equation}
-    \item The volatility $\sigma$ is constant (relaxing this leads to models \`a la Eston), and the risk-free rate $r$ is constant as well (not a stochastic process).
+    \item The volatility $\sigma$ is constant (relaxing this leads to Heston-type models), and the risk-free rate $r$ is constant as well (not a stochastic process).
     % CLAUDE NOTE: the notes write "modello di Eston"; almost certainly "Heston" is meant —
     % relaxing the constant-σ hypothesis leads precisely to the Heston stochastic-volatility
     % model treated in Chapter 7.
@@ -415,7 +405,7 @@ The derivation rests on seven hypotheses, which we number for later reference.
     (Dividends can be accommodated by shifting the drift, $\mu \to \tilde\mu = \mu + q$ with $q < 0$, because paying dividends reduces the capital of the company.)
     \item The underlying is \emph{infinitely divisible}: one can hold any real fraction $\Delta \cdot S_t$, with
     \begin{equation}
-    \Delta = \frac{\#\,\text{shares held}}{\#\,\text{shares in the contract}},\quad \Delta \le 1.
+    \Delta = \frac{\#\,\text{shares held}}{\#\,\text{shares in the contract}},\quad \Delta\in\mathbb R.
     \end{equation}
     \item \emph{Continuous trading} is possible: the portfolio can be adjusted at every instant.
     \item \textbf{No arbitrage}: it is impossible to realize risk-free profits whose return exceeds $r$.
@@ -456,21 +446,20 @@ For the first term, It\^o's formula~\eqref{eq:ito-formula} applied to $O(S,t)$ g
 \begin{equation}
 dO(S,t) = \biggl(\frac{\partial O}{\partial t} + \mu\, S\,\frac{\partial O}{\partial S} + \frac{1}{2}\,\sigma^2 S^2\,\frac{\partial^2 O}{\partial S^2}\biggr)dt + \sigma\, S\,\frac{\partial O}{\partial S}\, dW_t.
 \end{equation}
-For the second term, the Leibniz rule would demand $d(\Delta S) = \Delta\,dS + S\,d\Delta + d\Delta\,dS$; the Black--Scholes prescription is to freeze $\Delta$ during the step,
-\begin{equation}
-d[\Delta(S,t)\, S] \approx \Delta(S,t)\, dS,
-\end{equation}
-an approximation valid on $[t,\, t+dt]$ (the hedge is rebalanced \emph{after} the price moves, never in anticipation --- the same non-anticipating logic as the It\^o integral).
+For the replicating portfolio the self-financing condition is
+\[
+ dO=\Delta\,dS+r\Pi\,dt.
+\]
+Rebalancing is funded within the portfolio.\footnote{Bj\"ork\cite{Bjork2020}, Definition~6.10 and Chapter~8.
+For the cash value $\Pi=O-\Delta S$, the product rule gives $d\Pi=r\Pi\,dt-S\,d\Delta-d[\Delta,S]$.
+Thus $d\Pi$ cannot be identified with $dO-\Delta\,dS$ when $\Delta$ varies.}
+Write $dG=dO-\Delta\,dS$ for the gain on the currently held hedged positions.
+Self-financing implies $dG=r\Pi\,dt$; no terms in the product rule are discarded.
 
-A word of honesty is owed about this step, because it is less innocent than it looks.
-Discarding $S\,d\Delta + d\Delta\,dS$ is not a Taylor truncation: $\Delta(S,t)$ depends on $S$, so by It\^o's own logic $d\Delta$ contains contributions of order $dW$ and $dt$ that have no automatic right to vanish.
-What saves the derivation is an economic constraint, the \emph{self-financing condition}: the writer rebalances the hedge using only the resources already inside the portfolio --- selling shares to hold more cash and vice versa --- with no money injected or withdrawn along the way.
-For a self-financing portfolio the change in wealth is, by construction, only the capital gain on the positions currently held, and the rebalancing terms cancel exactly between the stock leg and the cash leg.
-The physicist's shortcut $d(\Delta S)\approx\Delta\,dS$ gets the right answer because it silently assumes this condition; the rigorous bookkeeping can be found in Bj\"ork\cite{Bjork2009}.
 
 Therefore
 \begin{equation}
-d\Pi(S,t) = \biggl(\frac{\partial O}{\partial t} + \mu\, S\,\frac{\partial O}{\partial S} + \frac{1}{2}\,\sigma^2 S^2\,\frac{\partial^2 O}{\partial S^2}\biggr)dt + \sigma\, S\,\frac{\partial O}{\partial S}\, dW_t - \Delta(S,t)\bigl(\mu S\, dt + \sigma S\, dW_t\bigr).
+dG = \biggl(\frac{\partial O}{\partial t} + \mu\, S\,\frac{\partial O}{\partial S} + \frac{1}{2}\,\sigma^2 S^2\,\frac{\partial^2 O}{\partial S^2}\biggr)dt + \sigma\, S\,\frac{\partial O}{\partial S}\, dW_t - \Delta(S,t)\bigl(\mu S\, dt + \sigma S\, dW_t\bigr).
 \end{equation}
 
 Now comes the decisive move, the procedure known as \emph{delta hedging}.
@@ -486,12 +475,12 @@ Choosing
 makes the stochastic terms cancel \emph{exactly}: the market risk has been engineered away, and with it --- remarkably --- also every occurrence of the drift $\mu$.
 What survives is deterministic:
 \begin{equation}
-d\Pi(S,t) = \biggl(\frac{\partial O}{\partial t} + \frac{1}{2}\,\sigma^2 S^2\,\frac{\partial^2 O}{\partial S^2}\biggr)dt.
+dG = \biggl(\frac{\partial O}{\partial t} + \frac{1}{2}\,\sigma^2 S^2\,\frac{\partial^2 O}{\partial S^2}\biggr)dt.
 \end{equation}
 
 But a riskless portfolio, by hypotheses (vi) and (vii), must earn exactly the risk-free rate, with $r$ constant by (iii):
 \begin{equation}
-d\Pi(S,t) = r\,\Pi(S,t)\, dt.
+dG = r\,\Pi(S,t)\, dt.
 \end{equation}
 Equating the two expressions and substituting $\Pi(S,t) = O(S,t) - \frac{\partial O}{\partial S}\,S$, we obtain
 \begin{equation}\label{eq:black-scholes}
@@ -499,10 +488,10 @@ Equating the two expressions and substituting $\Pi(S,t) = O(S,t) - \frac{\partia
 \end{equation}
 the celebrated \textbf{Black--Scholes equation}.
 
-\subsection{Properties of the Black--Scholes equation}
+\paragraph*{Properties of the Black--Scholes equation.}
 
 A few structural remarks before we solve it.
-The Black--Scholes equation is a \emph{parabolic}, \emph{inhomogeneous} PDE, and a suitable change of variables reduces it to the heat equation --- the same equation Einstein derived for Brownian motion, now propagating option values instead of pollen grains.
+The Black--Scholes equation is a \emph{parabolic}, \emph{linear homogeneous} PDE, and a suitable change of variables reduces it to the heat equation --- the same equation Einstein derived for Brownian motion, now propagating option values instead of pollen grains.
 Its solution $O(S,t)$, with the appropriate terminal condition, is the price of either a put or a call: it is the \emph{no-arbitrage} price.
 
 The most striking feature of~\eqref{eq:black-scholes} is a symbol that is \emph{missing}: the equation contains $r$, $\sigma$, and (through the boundary conditions) $X$ and $T$, but not $\mu$.
@@ -517,114 +506,84 @@ Delta hedging removes the market risk, and with it the reward for bearing it; wh
 
 \section[Risk-neutral valuation and Girsanov's theorem*]{Risk-neutral valuation and Girsanov's theorem\texorpdfstring{$^*$}{*}}
 \label{sec:rn-girsanov}
-% ============================================================================
-% SECTION WRITTEN FROM SCRATCH (asterisk convention): this material does NOT appear
-% in the handwritten notes, nor in the official course program (checked 2026-07-06
-% against "slides and other/programma.pdf": the program lists "valutazione neutrale
-% al rischio e soluzione dell'equazione di B&S" but no Girsanov / martingale-measure
-% theory). Drafted by Claude from Björk and Shreve.
-% VERIFIED against the 4th edition of Björk in "slides and other/" (2026-07-06):
-%   - Girsanov theorem = Björk Thm 12.3, with likelihood process L_t (the Doleans
-%     exponential, Def. 12.4) and kernel convention φ = −θ relative to the form below;
-%   - Novikov condition = Björk Lemma 12.5;
-%   - fundamental theorems of asset pricing = Björk ch. 11.
-% The statements below match Björk's up to that sign convention.
-% ============================================================================
-\footnotetext{Sections marked with an asterisk do not correspond to material in the handwritten lecture notes or in the official course program; they were written from the cited literature to fill a conceptual gap.}
+The replacement of the historical drift $\mu$ by $r$ can be expressed as a change of probability measure.
+This section supplies the probabilistic framework for the hedging calculation.\footnote{This is a supplement to the handwritten derivation, not a transcription.
+The statements and notation follow Bj\"ork, fourth edition\cite{Bjork2020}: Definition~4.7 and Proposition~4.8 (p.~50), Theorem~12.3 (pp.~177--178), Definition~12.4 and Lemma~12.5 (p.~179), and Chapter~11 on arbitrage pricing.
+Risk-neutral valuation itself is in the course program; Girsanov's theorem is an added explanation.}
 
-The derivation of the Black--Scholes equation left us with a small mystery.
-The drift $\mu$ --- the one parameter that says how much the stock is \emph{expected} to earn --- vanished from the pricing equation, and we asserted that options are priced as if the stock drifted at the risk-free rate $r$.
-The assertion is correct, but so far it rests on the algebra of one particular hedging argument.
-This section supplies the missing structure: the modern formulation of no-arbitrage pricing through a \emph{change of probability measure}, which both justifies the replacement $\mu\to r$ and explains in what sense the ``risk-neutral world'' exists.
+\paragraph*{Information and martingales.}
+Fix a finite horizon $T$ and a filtered probability space
+\[
+ (\Omega,\mathcal F,(\mathcal F_t)_{0\le t\le T},P)
+\]
+satisfying the usual conditions.
+Here $\mathcal F_t$ represents all information available at time $t$, and $W$ is a Wiener process under $P$.
+A process $X$ is a martingale if it is adapted, $E^P[|X_t|]<\infty$, and
+\[
+ E^P[X_t\mid\mathcal F_s]=X_s,\qquad 0\le s\le t\le T.
+\]
+Conditioning on $\mathcal F_s$ includes the entire observed history, rather than just the current value of $X$.
+For a progressively measurable integrand $g$ with $E^P[\int_0^T g_s^2\,ds]<\infty$, the It\^o integral $\int_0^t g_s\,dW_s$ is a square-integrable martingale.
+Adaptedness alone does not give this conclusion.
 
-\subsection{Two worlds, one market}
-
-Let us first say precisely what is meant by a ``world''.
-A probability measure $\mathbb{P}$ assigns probabilities to the events generated by the market; the GBM with historical drift,
-\begin{equation}
-dS_t = \mu\, S_t\, dt + \sigma\, S_t\, dW_t,
+\paragraph*{Changing the measure.}
+Let $\varphi$ be progressively measurable, with $\int_0^T\varphi_s^2\,ds<\infty$ almost surely, and define the likelihood process
+\begin{equation}\label{eq:rn-density}
+ L_t=\exp\left\{\int_0^t\varphi_s\,dW_s-\frac12\int_0^t\varphi_s^2\,ds\right\},
+ \qquad dL_t=\varphi_tL_t\,dW_t,\quad L_0=1.
 \end{equation}
-describes the statistics of $S_t$ under the \emph{real-world} (or historical) measure $\mathbb{P}$ --- the one whose frequencies we would estimate from data.
-A second measure $\mathbb{Q}$ is called \emph{equivalent} to $\mathbb{P}$ when the two agree on which events are impossible: anything that has zero probability under one has zero probability under the other, and vice versa.
-Equivalent measures can disagree --- even wildly --- on the probabilities of possible events; what they share is the set of scenarios they take seriously.
-The technical device that converts one into the other is a positive random weight, the \emph{Radon--Nikodym derivative} $\frac{d\mathbb{Q}}{d\mathbb{P}}$, which reweights the trajectories:
-\begin{equation}
-\mathbb{E}^{\mathbb{Q}}[\,\cdot\,] = \mathbb{E}^{\mathbb{P}}\!\Bigl[\tfrac{d\mathbb{Q}}{d\mathbb{P}}\,\cdot\Bigr].
+Assume $E^P[L_T]=1$.
+A sufficient condition is Novikov's condition,
+\[
+ E^P\left[\exp\left\{\frac12\int_0^T\varphi_s^2\,ds\right\}\right]<\infty.
+\]
+Define $Q$ on $\mathcal F_T$ by $dQ/dP=L_T$.
+Girsanov's theorem\cite{Girsanov1960} then states that
+\begin{equation}\label{eq:girsanov}
+ W_t^Q=W_t-\int_0^t\varphi_s\,ds
+ \qquad\text{or, equivalently,}\qquad dW_t=\varphi_t\,dt+dW_t^Q
 \end{equation}
-In the path-integral language of Chapter~3 this is a familiar move: two measures on trajectories differ by a reweighting of each path, i.e.\ by a shift of the action.
+is a Wiener process under $Q$.
+The measures are equivalent: they have the same null events, although they assign different probabilities to other events.
+The positive exponential is only a local martingale without the expectation condition; it cannot in general be used as a probability density merely because the stochastic integral exists.
 
-\subsection{Girsanov's theorem}
-
-The fundamental result says exactly which reweightings are available for Brownian trajectories, and what they do.
-
-\medskip
-\noindent\textbf{Theorem (Girsanov).}\cite{Girsanov1960}
-\emph{Let $W_t$ be a Wiener process under $\mathbb{P}$, and let $\theta$ be a (suitably integrable, non-anticipating) process.
-Define the measure $\mathbb{Q}$ by the Radon--Nikodym derivative}
-\begin{equation}
-\frac{d\mathbb{Q}}{d\mathbb{P}}\bigg|_t = \exp\!\Bigl\{-\int_0^t \theta_s\, dW_s - \frac{1}{2}\int_0^t \theta_s^2\, ds\Bigr\}.
+\paragraph*{Application to the Black--Scholes market.}
+Use Bj\"ork's notation $B$ for the bank account in this section, with $dB_t=rB_t\,dt$ and $B_0=1$.
+For the stock,
+\[
+ dS_t=\mu S_t\,dt+\sigma S_t\,dW_t,
+ \qquad \mu,r\in\mathbb R,\quad \sigma>0.
+\]
+Set $\varphi=(r-\mu)/\sigma$; Novikov's condition holds for these constant coefficients on $[0,T]$.
+Substitution in the stock equation gives
+\begin{equation}\label{eq:risk-neutral-gbm}
+ dS_t=rS_t\,dt+\sigma S_t\,dW_t^Q,
+ \qquad d(S_t/B_t)=\sigma(S_t/B_t)\,dW_t^Q.
 \end{equation}
-\emph{Then the shifted process}
-\begin{equation}
-\widetilde{W}_t = W_t + \int_0^t \theta_s\, ds
+The discounted stock is a true $Q$-martingale in this model.
+The market price of risk is $\lambda=(\mu-r)/\sigma=-\varphi$.
+The volatility coefficient and the paths are unchanged; the distribution of those paths changes.
+
+For an integrable replicable claim $X$ paid at $T$, the valuation formula is
+\begin{equation}\label{eq:risk-neutral-price}
+ \Pi_t[X]=B_tE^Q\left[\frac{X}{B_T}\,\middle|\,\mathcal F_t\right].
 \end{equation}
-\emph{is a Wiener process under $\mathbb{Q}$.}
-\medskip
+Here $X$ and $\Pi_t[X]$ are Bj\"ork's claim and price notation, not the strike $X$ and cash holding $\Pi(S,t)$ used in the preceding derivation.
+For a European payoff $\Phi(S_T)$, the bridge to that notation is
+\[
+ O(S_t,t)=\Pi_t[\Phi(S_T)]
+ =e^{-r(T-t)}E^Q[\Phi(S_T)\mid\mathcal F_t].
+\]
+Since $S$ is Markov in this model, this conditional expectation can also be written as a function of $S_t$ and $t$.
+Replication gives this formula when the discounted replicating wealth is a martingale; appropriate integrability is part of that assertion.
 
-In words: an exponential reweighting of the trajectories can \emph{add any drift we like} to a Brownian motion --- and that is all it can do.
-The volatility is untouchable: it is encoded in the quadratic variation $[dW]^2=dt$, which is a property of the individual trajectories (Chapter~4), not of the probabilities assigned to them, and equivalent measures keep the trajectories --- hence $\sigma$ --- intact.
-Drift is a matter of opinion; volatility is a matter of fact.
-
-Now apply this to the stock.
-Choose the constant
-\begin{equation}
-\theta = \frac{\mu - r}{\sigma},
-\end{equation}
-which the reader will recognize as the \emph{market price of risk} --- the excess return per unit of volatility, the same combination that will reappear in the bond market in Chapter~6.
-Substituting $dW_t = d\widetilde{W}_t - \theta\,dt$ into the GBM,
-\begin{equation}
-dS_t = \mu\, S_t\, dt + \sigma\, S_t\bigl(d\widetilde{W}_t - \tfrac{\mu-r}{\sigma}\,dt\bigr) = r\, S_t\, dt + \sigma\, S_t\, d\widetilde{W}_t,
-\end{equation}
-and the historical drift is gone: under $\mathbb{Q}$, the stock is a GBM with drift $r$ and the \emph{same} volatility $\sigma$.
-The risk-neutral world invoked after the Black--Scholes PDE is therefore not a metaphor: it is the equivalent measure $\mathbb{Q}$ singled out by the market price of risk, and the replacement $\mu\to r$ is Girsanov's theorem in action.
-
-\subsection{Martingales and the fundamental theorems}
-
-Why is $\mathbb{Q}$, among all equivalent measures, the right one to price with?
-Consider the \emph{discounted} stock price $\widetilde{S}_t = e^{-rt}S_t$, the stock measured in units of the bank account.
-By It\^o's formula, under $\mathbb{Q}$,
-\begin{equation}
-d\widetilde{S}_t = e^{-rt}\,dS_t - r\,e^{-rt}S_t\,dt = \sigma\,\widetilde{S}_t\, d\widetilde{W}_t,
-\end{equation}
-with no drift at all: $\widetilde{S}_t$ is a \emph{martingale} under $\mathbb{Q}$ (Section~\ref{sec:feynman-kac}), a fair game whose best forecast is its current value.
-For this reason $\mathbb{Q}$ is called an \emph{equivalent martingale measure} (EMM).
-Discounted option prices, being $\mathbb{Q}$-expectations of terminal payoffs, inherit the martingale property --- which is precisely why the pricing recipe ``expected payoff under $\mathbb{Q}$, discounted at $r$'',
-\begin{equation}
-O(S,t) = e^{-r(T-t)}\,\mathbb{E}^{\mathbb{Q}}\bigl[\Phi(S_T)\,\big|\,S_t=S\bigr],
-\end{equation}
-reproduces the Feynman--Kac formula~\eqref{eq:feynman-kac-discount} with the risk-neutral log-normal density.
-
-The deep justification is a pair of structure theorems, due in this form to Harrison and Pliska\cite{HarrisonPliska1981}.
-
-\medskip
-\noindent\textbf{First fundamental theorem of asset pricing.}
-\emph{The market admits no arbitrage if and only if there exists an equivalent martingale measure $\mathbb{Q}$.}
-
-\medskip
-\noindent\textbf{Second fundamental theorem of asset pricing.}
-\emph{An arbitrage-free market is complete if and only if the equivalent martingale measure is unique.}
-\medskip
-
-The two theorems turn the loose talk of Section~\ref{sec:bs-hypotheses} into mathematics.
-No arbitrage --- hypothesis (vii) --- is not merely a constraint on prices: it is \emph{equivalent} to the existence of a risk-neutral world.
-Completeness --- every payoff replicable, as used in the hedging argument --- is what makes that world unique, and hence the price of an option a single number rather than an interval.
-In the Black--Scholes market (one stock, one Brownian motion) both hold, $\mathbb{Q}$ is the measure constructed above, and everything in this chapter is consistent.
-In the Heston market of Chapter~7, where a second source of noise (the volatility) is not traded, completeness fails, the martingale measure is no longer unique, and a new object --- the price of volatility risk --- must be brought in from the market to select one: the reader now has the vocabulary to recognize that situation when it arrives.
-
-One final remark ties the knot with the hedging derivation.
-Under $\mathbb{P}$, different investors hold different portfolios according to their appetite for risk, and $\mu$ matters; under $\mathbb{Q}$, every asset earns $r$ and risk preferences have been absorbed into the measure itself.
-The option price is the same in both descriptions --- pricing by replication ($\mathbb{P}$, plus hedging) and pricing by expectation ($\mathbb{Q}$, plus discounting) are two routes to the same number --- but the second is almost always the shorter one, and it is the language in which modern mathematical finance is written.
-
+\paragraph*{No arbitrage and completeness.}
+In the general locally bounded semimartingale setting, the precise condition is \emph{no free lunch with vanishing risk}, for admissible strategies whose wealth is bounded below.
+It is equivalent to the existence of an equivalent \emph{local} martingale measure for discounted prices, not necessarily a true martingale measure; continuous-trading martingale methods were developed by Harrison and Pliska\cite{HarrisonPliska1981}.\footnote{Bj\"ork\cite{Bjork2020}, Theorem~11.10 (p.~159); the completeness and uniqueness statement is Theorem~11.17 (p.~163), within the market and claim classes specified there.
+See also the numeraire valuation formulation in Sections~11.8--11.9.}
+For the Brownian Black--Scholes market with the Brownian filtration and nonzero $\sigma$, the equivalent martingale measure is unique and the usual square-integrable claims are replicable.
+The Heston model introduced later has a second, untraded source of risk when $|\rho|<1$; trading only the stock and bank account does not make that market complete.
+A volatility risk premium must then be specified to select a pricing measure.
 
 \section{The Feynman--Kac formula}\label{sec:feynman-kac}
 
@@ -632,58 +591,43 @@ The Black--Scholes equation is a PDE; the payoff is a terminal condition; what w
 The key that unlocks it is the Feynman--Kac theorem, a beautiful bridge between partial differential equations and stochastic expectations: it says that solving the PDE is the same as \emph{averaging the payoff over the trajectories of an SDE}.
 We first present the result in general, then apply it to Black--Scholes.
 
-\subsection{Statement of the theorem}
-
-Consider the \emph{homogeneous} PDE obtained from the Black--Scholes equation by renaming $S\to x$ and $C(S,t)\to f(x,t)$ and dropping, for the moment, the right-hand side:
+\paragraph*{Statement and conditional expectation.}
+Use Bj\"ork's notation $F(t,x)$ for the deterministic solution and $X_s$ for the stochastic state.\footnote{The argument follows Bj\"ork\cite{Bjork2020}, Propositions~5.5--5.6 (pp.~74--75).
+Relative to the handwritten notation, $F(t,x)=f(x,t)$, $\mu(t,x)=a(x,t)$ and $\sigma(t,x)=b(x,t)$.
+The coefficients in this paragraph are generic functions, not the constant stock parameters.}
+Suppose that $X$ solves
+\[
+ dX_s=\mu(s,X_s)\,ds+\sigma(s,X_s)\,dW_s,\qquad X_t=x,
+\]
+and that $F\in C^{1,2}$ solves the terminal-value problem
 \begin{equation}\label{eq:feynman-kac-pde}
-\frac{\partial f}{\partial t} + a(x,t)\,\frac{\partial f}{\partial x} + \frac{1}{2}\,b(x,t)^2\,\frac{\partial^2 f}{\partial x^2} = 0,
+ F_t(t,x)+\mu(t,x)F_x(t,x)+\frac12\sigma^2(t,x)F_{xx}(t,x)=0,
+ \qquad F(T,x)=\Phi(x).
 \end{equation}
-supplemented by a \emph{terminal condition} $f(x,T)=\Phi(x_T)$ --- note, terminal and not initial: the equation is solved backwards, from the payoff.
-
-Can this PDE be linked to an SDE?
-Consider a generic It\^o process
-\begin{equation}
-dx(t) = a(x,t)\, dt + b(x,t)\, dW_t,
-\end{equation}
-with the same coefficients, and follow $f$ along its trajectories.
-By It\^o's formula, and using~\eqref{eq:feynman-kac-pde} to kill the entire $dt$ bracket,
-\begin{equation}
-df(x,t) = \cancel{\biggl[\frac{\partial f}{\partial t} + a(x,t)\frac{\partial f}{\partial x} + \frac{1}{2}b^2(x,t)\frac{\partial^2 f}{\partial x^2}\biggr]}dt + b(x,t)\,\frac{\partial f}{\partial x}\, dW_t = b(x,t)\,\frac{\partial f}{\partial x}\, dW_t.
-\end{equation}
-Along the trajectories of the SDE, $f$ is driftless: it changes only through noise.
-Integrating from $t$ to $T$ and using the terminal condition,
-\begin{equation}
-f(x,T) - f(x,t) = \int_t^T b(x,t')\,\frac{\partial f}{\partial x}\, dW_{t'},
-\end{equation}
-a stochastic integral that, taken at face value, is intractable.
-
-\subsection{Connection to conditional expectations}
-
-The way out is not to evaluate the stochastic integral, but to \emph{average it away}.
-Taking the conditional expectation of both sides, the It\^o integral --- being non-anticipating, hence a martingale\footnote{A \emph{martingale} is a stochastic process whose conditional expectation of the next value, given the present, equals the present value: $\mathbb{E}[X_{t'} \mid X_t] = X_t$ for $t' > t$.
-In financial terms, a martingale is a ``fair game'': the best prediction of the future price is the current price.
-Martingale methods are the modern backbone of mathematical finance.} --- has zero mean, and
-\begin{equation}
-\mathbb{E}\bigl[f(x,T)\mid x(t)=x\bigr] - f(x,t) = 0.
-\end{equation}
-Solving for $f(x,t)$ and writing the expectation explicitly as an integral over the transition density,
+Assume that the SDE is well posed and that $E_{t,x}[\int_t^T(\sigma(s,X_s)F_x(s,X_s))^2\,ds]<\infty$.
+It\^o's formula, evaluated along the stochastic trajectory, gives
+\[
+ \Phi(X_T)-F(t,x)=\int_t^T\sigma(s,X_s)F_x(s,X_s)\,dW_s.
+\]
+The conditional expectation of the integral is zero under the stated square-integrability assumption.
+Consequently,
 \begin{equation}\label{eq:feynman-kac-result}
-f(x,t) = \mathbb{E}\bigl[\Phi(x_T) \mid x(t) = x\bigr] = \mathbb{E}_{x,t}\bigl[\Phi(x_T)\bigr] = \int \Phi(x_T)\, P(x_T, T \mid x, t)\, dx_T.
+ F(t,x)=E_{t,x}[\Phi(X_T)]
+ =\int\Phi(y)P(y,T\mid x,t)\,dy,
 \end{equation}
-This is the \textbf{Feynman--Kac formula} in its homogeneous form, and it repays contemplation: the solution of a PDE at the point $(x,t)$ equals the average of the terminal condition over all the stochastic trajectories that start there.
-It is the same circle of ideas as the path integral of Chapter~3, now run in reverse.
+when a transition density exists.
+This is the Feynman--Kac representation: the solution at $(t,x)$ is the expected terminal value for the process starting there.
 
-\subsection{Inhomogeneous case}
-
-The true Black--Scholes equation is not homogeneous: its right-hand side is $r\,O$, not zero.
-The Feynman--Kac result generalizes to cover this discounting term, and the effect is a single prefactor:
+\paragraph*{Discounting.}
+For a constant $r$, the PDE $F_t+\mu F_x+\tfrac12\sigma^2F_{xx}-rF=0$ remains linear and homogeneous; $-rF$ is a zeroth-order term, not an external source.
+Applying the same argument to $e^{-rs}F(s,X_s)$, with the corresponding square-integrability condition, yields the discount factor.
+In the option notation and under the risk-neutral dynamics this reads
 \begin{equation}\label{eq:feynman-kac-discount}
-C(S,t) = e^{-r(T-t)}\,\mathbb{E}_{x,t}\bigl[\Phi(x_T)\bigr].
+ C(S,t)=e^{-r(T-t)}E^Q[\Phi(S_T)\mid S_t=S].
 \end{equation}
-The factor $e^{-r(T-t)}$ is precisely the \emph{discount factor} of Section~\ref{sec:bank-account}: a payoff received at $T$ is worth, today, its expectation deflated by the time value of money.
-Formula~\eqref{eq:feynman-kac-discount} is the mathematical form of the risk-neutral pricing recipe: \emph{expected payoff, discounted}.
+This connects the terminal-value PDE to the valuation formula in Section~\ref{sec:rn-girsanov}.
 
-\subsection{Application to Black--Scholes}
+\paragraph*{Application to Black--Scholes.}
 
 For the Black--Scholes equation the relevant SDE is the risk-neutral GBM, $dS = rS\,dt + \sigma S\, dW_t$, and the terminal condition is the call payoff $\Phi(S_T) = \{S_T - X\}_+$.
 The transition density of the risk-neutral GBM is the log-normal\footnote{Obtained from~\eqref{eq:log-normal} by the replacement $\mu\to r$.}
@@ -746,13 +690,12 @@ Note also, from $1 = N(+\infty) = \int_{-\infty}^{+\infty}\frac{1}{\sqrt{2\pi}}\
 
 \begin{figure}[h!]
 \centering
-\begin{tikzpicture}[scale=0.9]
-    \draw[->] (-3,0) -- (3.5,0) node[right] {$x$};
-    \draw[->] (0,-0.2) -- (0,2.2) node[above] {$N(x)$};
-    \draw[thick, blue, domain=-3:3, samples=80]
-        plot (\x, {2/(1+exp(-1.7*\x))});
-    \draw[dashed, gray] (-3,2) -- (3,2);
-    \node[right, font=\footnotesize] at (3,2) {$1$};
+\begin{tikzpicture}
+\draw[->] (-3.3,0)--(3.5,0) node[right] {$x$};
+\draw[->] (0,-0.2)--(0,2.4) node[above] {$N(x)$};
+\draw[dashed,gray] (-3,2)--(3,2) node[right] {$1$};
+\node[left] at (0,1) {$\tfrac12$};
+\draw[blue,thick] plot coordinates {(-3.000,0.002700) (-2.950,0.003178) (-2.900,0.003732) (-2.850,0.004372) (-2.800,0.005110) (-2.750,0.005960) (-2.700,0.006934) (-2.650,0.008049) (-2.600,0.009322) (-2.550,0.010772) (-2.500,0.012419) (-2.450,0.014286) (-2.400,0.016395) (-2.350,0.018773) (-2.300,0.021448) (-2.250,0.024449) (-2.200,0.027807) (-2.150,0.031555) (-2.100,0.035729) (-2.050,0.040364) (-2.000,0.045500) (-1.950,0.051176) (-1.900,0.057433) (-1.850,0.064314) (-1.800,0.071861) (-1.750,0.080118) (-1.700,0.089131) (-1.650,0.098943) (-1.600,0.109599) (-1.550,0.121142) (-1.500,0.133614) (-1.450,0.147059) (-1.400,0.161513) (-1.350,0.177016) (-1.300,0.193601) (-1.250,0.211300) (-1.200,0.230139) (-1.150,0.250144) (-1.100,0.271332) (-1.050,0.293718) (-1.000,0.317311) (-0.950,0.342112) (-0.900,0.368120) (-0.850,0.395325) (-0.800,0.423711) (-0.750,0.453255) (-0.700,0.483927) (-0.650,0.515692) (-0.600,0.548506) (-0.550,0.582319) (-0.500,0.617075) (-0.450,0.652710) (-0.400,0.689157) (-0.350,0.726339) (-0.300,0.764177) (-0.250,0.802587) (-0.200,0.841481) (-0.150,0.880765) (-0.100,0.920344) (-0.050,0.960122) (0.000,1.000000) (0.050,1.039878) (0.100,1.079656) (0.150,1.119235) (0.200,1.158519) (0.250,1.197413) (0.300,1.235823) (0.350,1.273661) (0.400,1.310843) (0.450,1.347290) (0.500,1.382925) (0.550,1.417681) (0.600,1.451494) (0.650,1.484308) (0.700,1.516073) (0.750,1.546745) (0.800,1.576289) (0.850,1.604675) (0.900,1.631880) (0.950,1.657888) (1.000,1.682689) (1.050,1.706282) (1.100,1.728668) (1.150,1.749856) (1.200,1.769861) (1.250,1.788700) (1.300,1.806399) (1.350,1.822984) (1.400,1.838487) (1.450,1.852941) (1.500,1.866386) (1.550,1.878858) (1.600,1.890401) (1.650,1.901057) (1.700,1.910869) (1.750,1.919882) (1.800,1.928139) (1.850,1.935686) (1.900,1.942567) (1.950,1.948824) (2.000,1.954500) (2.050,1.959636) (2.100,1.964271) (2.150,1.968445) (2.200,1.972193) (2.250,1.975551) (2.300,1.978552) (2.350,1.981227) (2.400,1.983605) (2.450,1.985714) (2.500,1.987581) (2.550,1.989228) (2.600,1.990678) (2.650,1.991951) (2.700,1.993066) (2.750,1.994040) (2.800,1.994890) (2.850,1.995628) (2.900,1.996268) (2.950,1.996822) (3.000,1.997300)};
 \end{tikzpicture}
 \caption{The cumulative standard normal distribution $N(x)$, which interpolates from $0$ to $1$; in the Black--Scholes formulas it plays the role of a probability of exercise.}
 \label{fig:cdf-normal}
@@ -779,7 +722,9 @@ that is,
 \end{equation}
 with $d_i = \frac{\ln\frac{S}{X} + (r \pm \frac{\sigma^2}{2})(T-t)}{\sigma\sqrt{T-t}}$, $i = 1,2$ (plus sign for $d_1$, minus for $d_2$).
 This is the \textbf{Black--Scholes formula for the European call} --- the formula that governs the pricing of options on every exchange in the world.
-Its structure is telling: the price is the current stock value weighted by $N(d_1)$, minus the discounted strike weighted by $N(d_2)$, and the weights, as we will see in Section~\ref{sec:greeks}, have the meaning of exercise probabilities.
+Its structure is telling: the price is the current stock value weighted by $N(d_1)$, minus the discounted strike weighted by $N(d_2)$, and the weights, as we will see in Section~\ref{sec:greeks}, are probabilities under different numeraires.\footnote{For a non-dividend-paying stock, $N(d_2)=Q(S_T>X\mid\mathcal F_t)$ under the bank-account measure, whereas $N(d_1)$ is the corresponding probability under the stock-numeraire measure.
+It is also the call delta; it is not the exercise probability under $Q$.
+See Bj\"ork\cite{Bjork2020}, the chapter on change of numeraire.}
 
 \subsection{Limiting cases}
 
@@ -792,25 +737,20 @@ Figure~\ref{fig:call-value} interpolates between these regimes; market jargon di
 \begin{figure}[h!]
 \centering
 \begin{tikzpicture}
-    \draw[->] (0,0) -- (5.5,0) node[right] {$S$};
-    \draw[->] (0,0) -- (0,3.5) node[above] {$C(S,t)$};
-    \draw[thick, blue, domain=0:5, samples=100]
-        plot (\x, {max(0, \x - 2.2)*0.8 + 0.5*exp(-0.3*(2.2-\x)^2)*(\x < 2.2 ? 1 : 0)});
-    \draw[dashed, gray] (0,0) -- (5,2.8);
-    \draw[dashed, gray] (2.2,0) -- (2.2,0.5);
-    \node[below] at (2.2,0) {$X$};
-    \node[right, font=\footnotesize] at (3.5,2.5) {$t \ll T$};
-    \draw[thick, green!50!black] (0,0) -- (2.2,0) -- (5,2.24);
-    \node[right, font=\footnotesize, green!50!black] at (4,1.4) {$t \to T$};
-    \node[font=\footnotesize] at (1,1) {\emph{out of the money}};
-    \node[font=\footnotesize] at (3.8,0.5) {\emph{in the money}};
-    \node[font=\footnotesize] at (2.2, -0.5) {\emph{at the money}};
+\draw[->] (0,0)--(5.5,0) node[right] {$S$};
+\draw[->] (0,0)--(0,3.5) node[above] {$C(S,t)$};
+\draw[blue,thick] plot coordinates {(0.000,0.000000) (0.050,0.000000) (0.100,0.000000) (0.150,0.000000) (0.200,0.000000) (0.250,0.000000) (0.300,0.000000) (0.350,0.000000) (0.400,0.000000) (0.450,0.000000) (0.500,0.000000) (0.550,0.000000) (0.600,0.000001) (0.650,0.000004) (0.700,0.000011) (0.750,0.000030) (0.800,0.000070) (0.850,0.000150) (0.900,0.000297) (0.950,0.000553) (1.000,0.000970) (1.050,0.001619) (1.100,0.002583) (1.150,0.003963) (1.200,0.005869) (1.250,0.008426) (1.300,0.011761) (1.350,0.016006) (1.400,0.021294) (1.450,0.027751) (1.500,0.035496) (1.550,0.044638) (1.600,0.055273) (1.650,0.067481) (1.700,0.081327) (1.750,0.096859) (1.800,0.114110) (1.850,0.133095) (1.900,0.153816) (1.950,0.176260) (2.000,0.200402) (2.050,0.226205) (2.100,0.253624) (2.150,0.282605) (2.200,0.313088) (2.250,0.345007) (2.300,0.378296) (2.350,0.412881) (2.400,0.448692) (2.450,0.485655) (2.500,0.523698) (2.550,0.562750) (2.600,0.602743) (2.650,0.643609) (2.700,0.685285) (2.750,0.727707) (2.800,0.770819) (2.850,0.814565) (2.900,0.858893) (2.950,0.903755) (3.000,0.949104) (3.050,0.994899) (3.100,1.041099) (3.150,1.087670) (3.200,1.134577) (3.250,1.181788) (3.300,1.229277) (3.350,1.277017) (3.400,1.324983) (3.450,1.373154) (3.500,1.421511) (3.550,1.470035) (3.600,1.518710) (3.650,1.567520) (3.700,1.616453) (3.750,1.665496) (3.800,1.714638) (3.850,1.763869) (3.900,1.813180) (3.950,1.862563) (4.000,1.912010) (4.050,1.961515) (4.100,2.011071) (4.150,2.060674) (4.200,2.110319) (4.250,2.160001) (4.300,2.209717) (4.350,2.259463) (4.400,2.309235) (4.450,2.359031) (4.500,2.408849) (4.550,2.458686) (4.600,2.508540) (4.650,2.558410) (4.700,2.608293) (4.750,2.658188) (4.800,2.708095) (4.850,2.758012) (4.900,2.807937) (4.950,2.857870) (5.000,2.907810)};
+\draw[thick,green!50!black] (0,0)--(2.2,0)--(5,2.8);
+\draw[dashed,gray] (2.2,0)--(2.2,0.5);
+\node[below] at (2.2,0) {$X$};
+\draw[blue,thick] (0.3,3.0)--(0.8,3.0) node[right,black,font=\footnotesize] {before maturity};
+\draw[green!50!black,thick] (0.3,2.65)--(0.8,2.65) node[right,black,font=\footnotesize] {terminal payoff};
 \end{tikzpicture}
 \caption{The Black--Scholes call value $C(S,t)$ before maturity (blue), smoothing the terminal hockey-stick payoff (green); as $t\to T$ the curve collapses onto the payoff.}
 \label{fig:call-value}
 \end{figure}
 
-\subsection{The European put and put-call parity}
+\paragraph*{The European put and put-call parity.}
 
 The same computation with the put payoff $\{X-S_T\}_+$ gives
 \begin{equation}\label{eq:bs-put}
@@ -828,7 +768,7 @@ or equivalently,
 P(S,t) = C(S,t) - S + X\, e^{-r(T-t)}.
 \end{equation}
 This is the \emph{put-call parity}: a deterministic, model-independent relation between the two prices.
-It is a direct consequence of the no-arbitrage principle --- the portfolio ``long a call, short a put, short the stock'' has a deterministic payoff at maturity, and must therefore earn exactly $r$ --- and it holds regardless of the Black--Scholes hypotheses.
+It is a direct consequence of the no-arbitrage principle --- the portfolio ``long a call, short a put, short the stock'' has a deterministic payoff at maturity, and must therefore earn exactly $r$ --- and it does not require GBM, but does require matched European strike and maturity, consistent discounting, and the no-dividend/frictionless assumptions used here.
 Any quoted pair of put and call prices violating~\eqref{eq:put-call-parity} is free money, and traders make sure it never lasts.
 
 
@@ -862,17 +802,17 @@ Delta also gives the trader's rule of thumb for small price moves,
 C(S+dS) \approx C(S) + \Delta\, dS.
 \end{equation}
 
-\subsection{Other Greeks}
+\paragraph*{Other Greeks.}
 
 In the model $r$ and $\sigma$ are constants; in reality they fluctuate, and their own sensitivities get names too:
 \begin{align}
 \rho &:= \frac{\partial O}{\partial r}, \\[3pt]
-\Theta &:= -\frac{\partial O}{\partial t} \qquad (\text{with } \tau = T - t), \\[3pt]
+\Theta &:= \frac{\partial O}{\partial t}=-\frac{\partial O}{\partial\tau} \qquad (\tau=T-t), \\[3pt]
 \nu &:= \frac{\partial O}{\partial \sigma} \qquad (\text{vega}).
 \end{align}
-Rho measures exposure to interest-rate moves, Theta the inexorable decay of the option value as maturity approaches, and Vega --- the most watched of the three --- the exposure to changes in volatility.
+Rho measures exposure to interest-rate moves, Theta the change with calendar time (not always negative), and Vega --- the most watched of the three --- the exposure to changes in volatility.
 
-\subsection{Interpretation of the writer's portfolio}
+\paragraph*{Interpretation of the writer's portfolio.}
 
 The Greeks make the writer's cash position interpretable.
 For a \textbf{call}, substituting $\Delta_C = N(d_1)$,
@@ -887,7 +827,7 @@ For a \textbf{put}, the same substitution gives
 \Pi(S,t) = P(S,t) - \Delta_P(S,t)\, S &= X\, e^{-r(T-t)}\, N(-d_2) - S\,N(-d_1) + N(-d_1)\,S\\
 &= X\, e^{-r(T-t)}\, N(-d_2),
 \end{split}\end{equation}
-with the mirror-image reading: $X$ is what the writer will receive from the holder, and $N(-d_2)$ is the probability of exercise of the put.
+with the mirror-image reading: the writer pays $X$ to the holder and receives the stock upon exercise, and $N(-d_2)$ is the probability of exercise of the put.
 
 
 \section{Volatility}\label{sec:volatility}
@@ -915,19 +855,19 @@ The relevant moments are
 where the first is the historical instantaneous return and the second yields the volatility, with the tell-tale dimension $[\sigma] = t^{-1/2}$ (typically days$^{-1/2}$).
 
 Here, however, we run into the conceptual problem announced in Chapter~3.
-The expectations above are \emph{ensemble} averages, over infinitely many copies of the market; what we possess is a single time series $S_k$, $k=0,\ldots,N-1$ --- \emph{one} realization (the same predicament as in meteorology).
+The expectations above are \emph{ensemble} averages, over infinitely many copies of the market; what we possess is a single time series $S_k$, $k=0,\ldots,N$ --- \emph{one} realization (the same predicament as in meteorology).
 Time averages equal ensemble averages only for stationary processes, and the market is \emph{not} stationary: both $\mu^*$ and $\sigma$ drift over the years.
 Strictly speaking, then, the procedure is unjustified; but no better tool exists, so one proceeds anyway, with eyes open, using the sample estimators
 \begin{align}
 \mu^* &\;\longrightarrow\; m = \frac{1}{\Delta t}\,\frac{1}{N}\sum_{k=0}^{N-1}\ln\frac{S_{k+1}}{S_k}, \\[6pt]
-\sigma^2 &\;\longrightarrow\; S^2 = \frac{1}{\Delta t}\,\frac{1}{N-1}\sum_{k=0}^{N-1}\Bigl(\ln\frac{S_{k+1}}{S_k} - m\Bigr)^{\!2}, \qquad S = \sqrt{S^2} = \sigma_{\text{historical}}.
+\sigma^2 &\;\longrightarrow\; S^2 = \frac{1}{\Delta t}\,\frac{1}{N-1}\sum_{k=0}^{N-1}\Bigl(\ln\frac{S_{k+1}}{S_k} - m\Delta t\Bigr)^{\!2}, \qquad S = \sqrt{S^2} = \sigma_{\text{historical}}.
 \end{align}
 Even then, judgement is required: there is no scientific criterion for the choice of the window $N$.
 Traders often take one year of data --- go too far back and the market was a different, possibly turbulent, animal.
 For greater accuracy one can use high-frequency returns, obtaining $\sigma_{\text{hf}}$.
 In all cases $\sigma_{\text{hist}}$ depends critically on $\Delta t$ and $N$: two analysts with different windows will disagree.
 
-\subsection{Implied volatility}
+\paragraph*{Implied volatility.}
 
 The second philosophy looks forwards, and inverts the logic.
 Historical volatility summarizes the past; but options are being traded \emph{now}, at prices the market has already agreed on, and those prices embody the market's collective expectation of \emph{future} volatility.
@@ -982,7 +922,7 @@ The most elegant one is the \emph{binomial tree} of Cox, Ross, and Rubinstein (1
 
 \subsection{The binomial tree}\label{sec:binomial-tree}
 
-On the interval $[0, T]$, introduce a time step $\Delta t = T/N$ with $N\gg 1$ (in practice $\sim 10^5$), so that time becomes discrete.
+On the interval $[0, T]$, introduce a time step $\Delta t = T/N$ with $N\gg1$, chosen by a convergence check, so that time becomes discrete.
 The brutal simplification --- and the source of all the model's tractability --- is this: at each step, the stock price is allowed only \emph{two} moves,
 \begin{equation}
 S \;\longrightarrow\;
@@ -1010,11 +950,12 @@ Since $\frac{\Delta S}{S}\approx \ln\bigl(1+\frac{\Delta S}{S}\bigr)$ for $\Delt
 \end{equation}
 whose variance is computed in two lines:
 \begin{equation}\label{eq:crr-var}
-\mathrm{Var}\!\Bigl[\frac{\Delta S}{S}\Bigr] = p\, u^2 + (1-p)\, d^2 - \bigl[p\, u + (1-p)\, d\bigr]^2 = p(1-p)(u-d)^2 = \sigma^2\Delta t.
+\mathrm{Var}\!\Bigl[\frac{\Delta S}{S}\Bigr] = p\, u^2 + (1-p)\, d^2 - \bigl[p\, u + (1-p)\, d\bigr]^2 = p(1-p)(u-d)^2 = \sigma^2\Delta t+O(\Delta t^2).
 \end{equation}
 
 Equations~\eqref{eq:crr-mean} and~\eqref{eq:crr-var} are two conditions for three unknowns; the third is a choice of convenience, but a crucial one.
-We require the tree to be \emph{recombining}:
+Constant up and down factors already give recombination because $ud=du$.
+The stronger CRR symmetry choice is
 \begin{equation}
 u\, d = 1,
 \end{equation}
@@ -1044,7 +985,7 @@ The payoff of this choice is combinatorial: without recombination the tree has $
 Solving the system: from~\eqref{eq:crr-mean},
 \begin{equation}\label{eq:crr-p}
 p = \frac{e^{r\Delta t} - d}{u - d},
-\end{equation}
+\end{equation}\footnote{Require $d<e^{r\Delta t}<u$ so that $0<p<1$; otherwise this binomial market admits arbitrage or is degenerate.}
 and the jump sizes are
 \begin{equation}\label{eq:crr-ud}
 u = e^{\sigma\sqrt{\Delta t}}, \qquad d = e^{-\sigma\sqrt{\Delta t}}.
@@ -1111,20 +1052,21 @@ With $N=3$, the terminal layer $i=3$ has four payoffs $C_{3,0},\ldots,C_{3,3}$; 
 
 The real payoff of the binomial framework is how little needs changing to price non-standard contracts; two examples close the chapter.
 
-\subsubsection{Barrier options}
+\paragraph*{Barrier options}
 
 A \emph{barrier option} (of knock-out type) dies if the stock price ever crosses a barrier $U$ during the life of the contract.
-On the tree, this is a one-line modification of the backward sweep: at every node,
+Set $C_{N,j}=\max(S_{N,j}-X,0)$ below the barrier and zero at or above it.
+Then modify the backward sweep at every earlier node,
 \begin{equation}
-\forall\, i,j: \quad
+i=N-1,\ldots,0,\quad j=0,\ldots,i:\quad
 \begin{cases}
-S_{i,j} > U &\Longrightarrow\; C_{i,j} = 0, \\
-S_{i,j} \le U &\Longrightarrow\; C_{i,j} = e^{-r\Delta t}\bigl\{p\, C_{i+1,j+1} + (1-p)\, C_{i+1,j}\bigr\},
+S_{i,j} \ge U &\Longrightarrow\; C_{i,j} = 0, \\
+S_{i,j} < U &\Longrightarrow\; C_{i,j} = e^{-r\Delta t}\bigl\{p\, C_{i+1,j+1} + (1-p)\, C_{i+1,j}\bigr\},
 \end{cases}
 \end{equation}
-i.e.\ the barrier condition is simply imposed node by node.\footnote{For knock-\emph{in} barrier options the logic is reversed: the option only comes alive once the barrier is crossed.}
+This tree checks the barrier only at its monitoring dates; continuous monitoring requires an additional crossing correction or a convergence analysis.\footnote{For knock-\emph{in} barrier options the logic is reversed: the option only comes alive once the barrier is crossed.}
 
-\subsubsection{American options}
+\paragraph*{American options}
 
 For an \emph{American} option, the holder may exercise at any time $t\le T$, and the tree handles this with equal ease.
 At each node $(i,j)$ the holder faces a choice --- exercise now, or hold on --- and rationality dictates taking the better of the two:
@@ -1132,6 +1074,6 @@ At each node $(i,j)$ the holder faces a choice --- exercise now, or hold on --- 
 C^A_{i,j} = \max\!\bigl\{S_{i,j} - X,\; e^{-r\Delta t}[p\, C^A_{i+1,j+1} + (1-p)\, C^A_{i+1,j}]\bigr\},
 \end{equation}
 the maximum of the \emph{exercise value} and the \emph{continuation value} (the discounted no-arbitrage value of keeping the option alive).
-When $S_{i,j} < X$ the exercise value is nil and the American option behaves like a European one; when $S_{i,j} > X$ early exercise may become optimal, capturing $S_{i,j}-X$ immediately rather than waiting.\footnote{For American \emph{calls} on non-dividend-paying stocks, one can show that the continuation value always exceeds the exercise value, so early exercise is never optimal and the American call equals the European one. For American \emph{puts}, by contrast, early exercise can be genuinely optimal.}
+When $S_{i,j} < X$ the exercise value is nil and immediate exercise is not advantageous, although future exercise opportunities can still affect its value; when $S_{i,j} > X$ early exercise may become optimal, capturing $S_{i,j}-X$ immediately rather than waiting.\footnote{For American \emph{calls} on non-dividend-paying stocks with $r\ge0$, one can show that the continuation value always exceeds the exercise value, so early exercise is never optimal and the American call equals the European one. For American \emph{puts}, by contrast, early exercise can be genuinely optimal.}
 
 With options priced --- analytically when we can, numerically when we must --- we turn in the next chapter to the other great family of financial instruments: bonds, and the stochastic dynamics of interest rates that governs them.

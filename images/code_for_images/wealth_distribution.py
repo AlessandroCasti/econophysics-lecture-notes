@@ -17,16 +17,17 @@ rng = np.random.default_rng(3)
 
 T_R = 40.0        # income "temperature" in k$ (Yakovenko: ~$40k)
 ALPHA = 1.7       # Pareto exponent of the CDF tail
-R_STAR = 4 * T_R  # bulk/tail crossover (~top 3%)
+R_STAR = 4 * T_R  # bulk/tail crossover (tail mass exp(-4), about 1.83%)
 F_TAIL = np.exp(-R_STAR / T_R)  # population fraction in the tail
 
 N = 40_000
-n_tail = int(N * F_TAIL)
-bulk = rng.exponential(T_R, size=N - n_tail)
-bulk = bulk[bulk < R_STAR]
-tail = R_STAR * (1 + rng.pareto(ALPHA, size=n_tail))
-r = np.concatenate([bulk, tail])
-
+# Exact inverse survival sampling of the continuous composite CCDF.
+u = rng.uniform(0, 1, N)
+r = np.empty(N)
+is_tail = u < F_TAIL
+r[is_tail] = R_STAR * (F_TAIL / u[is_tail]) ** (1 / ALPHA)
+r[~is_tail] = -T_R * np.log(u[~is_tail])
+assert len(r) == N
 rs = np.sort(r)
 ccdf = 1.0 - np.arange(1, len(rs) + 1) / len(rs)
 mask = ccdf > 0
@@ -35,7 +36,7 @@ n_tail_pts = int(len(rs) * F_TAIL * 1.5)
 sub = np.concatenate([np.arange(0, len(rs) - n_tail_pts, 25),
                       np.arange(len(rs) - n_tail_pts, len(rs))])
 
-fig, (axl, axr) = plt.subplots(1, 2, figsize=(6.4, 3.1))
+fig, (axl, axr) = plt.subplots(1, 2, figsize=(6.4, 3.1), layout="constrained")
 
 # Left panel: log-linear (exponential bulk is a straight line).
 axl.semilogy(rs[sub], ccdf[sub], ".", color=BLUE, ms=3)

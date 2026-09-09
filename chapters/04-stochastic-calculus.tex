@@ -27,7 +27,9 @@ We now promote it to the general form
 where the constants $a$ and $b$ will turn out to be directly connected to the coefficients $a_1,a_2$ of the Fokker--Planck equation.
 
 First we must say what we mean by the noise.
-The \emph{white noise} $\{\xi(t)\}_{t\ge0}$ is a continuous-time stochastic process satisfying three properties:
+Here $\xi$ denotes normalized Gaussian white noise, a generalized random process rather than a function with pointwise values.
+Its covariance formulas are interpreted distributionally; its amplitude need not equal that of the physical random force in Chapter~2.
+It has three formal properties:
 \begin{enumerate}[label=(\roman*)]
     \item it has zero mean, $\langle\xi(t)\rangle = 0$ for all $t$;
     \item it is delta-correlated, $\langle\xi(t)\xi(t')\rangle = \delta(t-t')$ for all $t,t'$: the noise at two distinct instants, however close, is completely uncorrelated;
@@ -101,7 +103,7 @@ The starting point is the autocorrelation of the Wiener process computed in Chap
 where in the second equality we have rewritten the minimum through the Heaviside step function $\Theta$ --- a form that can be differentiated.
 Differentiating with respect to $t$ in the distributional sense (the derivative of $\Theta$ being a delta, whose two contributions cancel),
 \begin{equation}
-\frac{d}{dt}\big[t\,\Theta(t'-t) + t'\,\Theta(t-t')\big] = \Theta(t-t'),
+\frac{d}{dt}\big[t\,\Theta(t'-t) + t'\,\Theta(t-t')\big] = \Theta(t'-t),
 \end{equation}
 and differentiating once more, now with respect to $t'$,
 \begin{equation}
@@ -198,13 +200,13 @@ For the \emph{It\^o} integral it is the other way around: $a$ gives the mean and
 A simple correspondence rule connects the two conventions by shifting the drift, so nothing is lost either way.
 
 
-\section{It\^o integrals}\cite{Ito1944}
+\section{It\^o integrals}
 
-Before stating It\^o's formula we collect the small toolbox of results about It\^o integrals that makes every later computation a few lines long.
+Before stating It\^o's formula we collect\cite{Ito1944} the small toolbox of results about It\^o integrals that makes every later computation a few lines long.
 
 \paragraph{Quadratic variation.}
 For the Wiener increment $\Delta W = W(t)-W(s)$, we already know that $\langle\Delta W\rangle=0$ and $\mathrm{Var}[\Delta W]=\Delta t$ (where $\Delta t = t-s$, $t>s$).
-We now need the statistics of the \emph{squared} increment $\Delta W^2 = [W(t)-W(s)]^2$, the so-called quadratic variation.
+We now need the statistics of the \emph{squared} increment $\Delta W^2 = [W(t)-W(s)]^2$, which will be summed over a partition to obtain quadratic variation.
 Using $\langle W(t)W(s)\rangle=\min(t,s)=s$,
 \begin{equation}
 \mathbb{E}[\Delta W^2] = \mathbb{E}[W^2(t)] + \mathbb{E}[W^2(s)] - 2\langle W(t)W(s)\rangle = t + s - 2s = t-s = \Delta t,
@@ -213,7 +215,7 @@ and, using the Gaussian moment identity $\mathbb{E}[\Delta W^4]=3\,\mathbb{E}[\D
 \begin{equation}
 \mathrm{Var}[\Delta W^2] = \mathbb{E}[\Delta W^4] - \mathbb{E}[\Delta W^2]^2 = 3\Delta t^2 - \Delta t^2 = 2\Delta t^2.
 \end{equation}
-Keep these two numbers in mind: the squared increment has mean of order $\Delta t$ but fluctuations of order $\Delta t^2$.
+Keep these two numbers in mind: the squared increment has mean of order $\Delta t$ but variance of order $\Delta t^2$ (standard deviation of order $\Delta t$).
 That mismatch of orders is about to do a lot of work.
 
 \paragraph{(a) Mean of an It\^o integral.}
@@ -229,7 +231,9 @@ Both integrals have zero mean:
 \mathbb{E}\!\left[\int_{t_0}^t W\,dW\right] = \frac{1}{2}\mathbb{E}[W^2(t)] - \frac{1}{2}t = \frac{1}{2}t - \frac{1}{2}t = 0.
 \end{equation}
 This is no accident.
-Call $G(t)$ \emph{non-anticipating} if, for every $t'<t$, it is statistically independent of the future increments $W(s)-W(t)$ for $s>t$ --- in financial language, if it does not use inside information about the future.
+Take $G$ progressively measurable with respect to the Brownian filtration and satisfying $E[\int_{t_0}^t G(s)^2\,ds]<\infty$.
+This is the non-anticipation and square-integrability condition used for the following mean and isometry statements.\footnote{Bj\"ork\cite{Bjork2020}, Definition~4.4, Proposition~4.8 and Corollary~4.9.
+The full martingale definition is given in Section~\ref{sec:rn-girsanov}.}
 Then
 \begin{equation}
 \mathbb{E}\!\left[\int_{t_0}^{t} G(t')\,dW(t')\right] = 0.
@@ -240,7 +244,7 @@ The proof is one line and shows exactly where the pre-point rule enters: discret
 \end{equation}
 
 \paragraph{(b) Correlation of two It\^o integrals (It\^o isometry).}
-For $G,H$ non-anticipating,
+For $G,H$ satisfying those same conditions,
 \begin{equation}
 \left\langle \int_{t_0}^{t} G(t')\,dW(t')\ \int_{t_0}^{t} H(t')\,dW(t')\right\rangle = \int_{t_0}^{t} dt'\,\langle G(t')H(t')\rangle;
 \end{equation}
@@ -252,7 +256,7 @@ For every non-anticipating $G(t)$,
 \begin{equation}
 \int_{t_0}^{t} G(t')\,[dW(t')]^2 = \int_{t_0}^{t} G(t')\,dt',\qquad\text{i.e.}\qquad [dW(t)]^2 = dt.
 \end{equation}
-The remarkable statement is the boxed-worthy identity on the right: \emph{the squared Wiener differential is not random at all} --- it equals $dt$, deterministically.
+The notation on the right expresses $d[W]_t=dt$ for the quadratic variation; it is not a pathwise equality $(W_{t+dt}-W_t)^2=dt$ for an individual finite increment.
 To see why, take $G=1$; the claim amounts to $t = \operatorname*{ms\text{-}lim}_{m\to\infty} Q_m$ with $Q_m = \sum_{i=1}^{m}(\Delta W_i)^2$.
 Using the two moments computed above with uniform spacing $\Delta t = t/m$,
 \begin{equation}\begin{split}
@@ -422,7 +426,7 @@ Setting $z=\ln x(t)\sim\mathcal{N}\!\big(\ln x_0-\tfrac{b^2}{2}t,\,b^2 t\big)$ a
 The two effects cancel exactly: the anomalous drift pushes the \emph{typical} trajectory down, while the fat upper tail of the exponential pulls the \emph{mean} up, and the mean is preserved despite the multiplicative noise.
 This tug-of-war between median and mean is a recurring theme in finance.
 
-\subsection{Geometric Brownian motion}
+\paragraph*{Geometric Brownian motion.}
 
 Adding a linear drift to the multiplicative noise gives the \emph{geometric Brownian motion} (GBM), with It\^o SDE
 \begin{equation}
@@ -456,7 +460,7 @@ Since the model is Markovian, the prices before $x(0)$ are irrelevant to the fut
 \subsection{The Ornstein--Uhlenbeck process}
 
 Our last and richest example is the \emph{Ornstein--Uhlenbeck} (OU) process.
-It occupies a special place in the theory: by \emph{Doob's theorem}\cite{Doob1942,UhlenbeckOrnstein1930} it is the unique process that is simultaneously Markov, Gaussian, and strictly stationary (in the strong sense, $P_t(x,t)=P_t(x)$).
+It occupies a special place in the theory: by \emph{Doob's theorem}\cite{Doob1942,UhlenbeckOrnstein1930} under the usual nondegeneracy and regularity assumptions it characterizes the stationary scalar Gaussian Markov case (in the strong sense, $P_t(x,t)=P_t(x)$).
 Uniqueness makes it the default model for any quantity that fluctuates around a stable level: short-term interest rates, volatility, or the velocity of a Brownian particle.
 Its It\^o SDE is
 \begin{equation}
@@ -464,7 +468,7 @@ dx(t) = -\kappa\,x\,dt + \sqrt{D}\,dW(t),\qquad \kappa>0,\ [\kappa]=T^{-1},\ \ta
 \end{equation}
 a random walk tethered by a linear restoring force: whenever $x$ wanders away from zero, the drift $-\kappa x$ pulls it back, on the characteristic time scale $\tau=1/\kappa$.
 
-To solve it we use the substitution $f(x,t)=x\,e^{\kappa t}$ (Doob's transform), designed precisely to absorb the restoring drift.
+To solve it we use the substitution $f(x,t)=x\,e^{\kappa t}$ (an integrating factor), designed precisely to absorb the restoring drift.
 By It\^o's formula,
 \begin{equation}
 df(x,t) = \left[\frac{\partial f}{\partial t} + a\frac{\partial f}{\partial x} + \frac{1}{2}b^2\frac{\partial^2 f}{\partial x^2}\right]dt + b\frac{\partial f}{\partial x}\,dW(t) = \sqrt{D}\,e^{\kappa t}\,dW(t),
@@ -494,7 +498,7 @@ For long times, $t\gg1/\kappa$, the memory of the initial condition is gone and 
 \begin{equation}
 \mathbb{E}[x(t)]\to0,\qquad \mathrm{Var}[x(t)]\to\frac{D}{2\kappa},
 \end{equation}
-so the process reaches a genuinely \emph{stationary} regime, with no residual time dependence: the injection of noise ($D$) and the dissipation of the restoring force ($\kappa$) balance.
+so the distribution converges to a stationary law; a process initialized with fixed $x_0$ is not stationary at finite times: the injection of noise ($D$) and the dissipation of the restoring force ($\kappa$) balance.
 For short times, $t\ll1/\kappa$, expanding the exponentials gives
 \begin{equation}
 \mathbb{E}[x(t)]\to x_0\{1-\kappa t+\dots\},\qquad \mathrm{Var}[x(t)]\to\frac{D}{2\kappa}\{1-1+2\kappa t+\dots\} = D\,t,
@@ -504,17 +508,17 @@ The full distribution at all times is Gaussian,
 \begin{equation}
 \mathcal{N}\!\left(x_0\,e^{-\kappa t},\ \frac{D}{2\kappa}\big[1-e^{-2\kappa t}\big]\right) \xrightarrow{\ t\to\infty\ } \mathcal{N}\!\left(0,\ \frac{D}{2\kappa}\right) = P^{\mathrm{O.U.}}(x).
 \end{equation}
-In the original physical setting, where $x$ is the velocity of a Brownian particle, the stationary law $P^{\mathrm{O.U.}}(v) = P^{\mathrm{M.B.}}(v)$ is nothing but the Maxwell--Boltzmann distribution (Appendix~\ref{app:stationary}): the OU process describes, in real time, how an out-of-equilibrium velocity distribution relaxes to thermal equilibrium, and matching the two stationary variances yields the Einstein fluctuation--dissipation relation, Equation~\eqref{eq:einstein-relation}.
+In the original physical setting, where $x$ is the velocity of a Brownian particle, the stationary law $P^{\mathrm{O.U.}}(v) = P^{\mathrm{M.B.}}(v)$ is nothing but the Maxwell--Boltzmann distribution: the OU process describes, in real time, how an out-of-equilibrium velocity distribution relaxes to thermal equilibrium, and matching the two stationary variances yields the Einstein fluctuation--dissipation relation, $D/(2\kappa)=k_BT/m$ for the velocity process.
 Figure~\ref{fig:ou} sketches the characteristic noisy relaxation of a single path, and Figure~\ref{fig:ou-sim} shows the full Monte Carlo picture: an ensemble of paths hugging the analytic mean, with the fluctuation band saturating at $\pm\sqrt{D/2\kappa}$.
 
 \begin{figure}[h!]
 \centering
 \begin{tikzpicture}[scale=1.0]
-  \draw[->] (-0.2,0) -- (7.2,0) node[right]{$t$};
+  \draw[->] (-0.2,0.5) -- (7.2,0.5) node[right]{$t$};
   \draw[->] (0,-0.4) -- (0,2.6) node[above]{$x(t)$};
   \node[left] at (0,2.1) {$x_0$};
   % equilibrium mean level
-  \draw[dashed] (0,0.5) -- (7.0,0.5) node[right]{\small $\langle x\rangle\to 0$ level};
+  \node[left] at (0,0.5) {$0$};
   % damped, noisy relaxation toward the level
   \draw[thick,red!60!black] (0,2.1)
     -- (0.4,1.7) -- (0.8,1.9) -- (1.2,1.4) -- (1.6,1.55) -- (2.0,1.1)

@@ -1,4 +1,6 @@
 \chapter*{Notation}
+\markboth{Notation}{Notation}
+\markboth{Notation}{Notation}
 \addcontentsline{toc}{chapter}{Notation}
 
 Stochastic processes, mathematical finance, and statistical physics each bring their own notational traditions, and this book inevitably inherits all three.
@@ -43,7 +45,9 @@ $\Pi(S,t)$ & cash position of the writer's hedged portfolio \\
 $\Delta,\ \Theta,\ \rho,\ \nu$ & the Greeks (hedge ratio, time decay, rate and vega sensitivities) \\
 $N(x)$ & cumulative standard normal distribution (\emph{not} the Gaussian density $\mathcal{N}$) \\
 $d_1,\ d_2$ & the two Black--Scholes arguments, $d_1 = d_2+\sigma\sqrt{T-t}$ \\
-$\mathbb{P},\ \mathbb{Q}$ & real-world and risk-neutral (martingale) probability measures \\
+$P,\ Q$ & historical and risk-neutral measures in the Bj\"ork supplement \\
+$L_t,\ \varphi_t,\ W_t^Q$ & likelihood process, Girsanov kernel and $Q$-Wiener process \\
+$B_t,\ \Pi_t[X]$ & bank account and claim price in that supplement (not the bond $B$ or cash $\Pi$ elsewhere) \\
 $u,\ d,\ p$ & up/down factors and risk-neutral probability of the CRR tree \\
 $S_{i,j},\ C_{i,j}$ & stock and option values at tree node (time $i$, $j$ up-moves) \\
 \hline
@@ -85,7 +89,7 @@ $P_>(x)$ & complementary cumulative distribution (CCDF) \\
 $z$ & normalized (standardized) log-return \\
 $f[Y],\ g[Y]$ & volatility function and vol-of-vol in stochastic volatility models \\
 $\rho$ & correlation of the two Wiener processes (leverage effect if $\rho<0$) \\
-$v=\sigma^2,\ \xi$ & variance and vol-of-vol in the Heston model \\
+$v,\ \sigma$ & variance and vol-of-vol in the Heston pricing section (instantaneous stock volatility is $\sqrt v$) \\
 $\lambda$ & price of volatility risk \\
 \hline
 \end{tabular}
@@ -98,7 +102,7 @@ $\lambda$ & price of volatility risk \\
 \hline
 $r$ & individual gross income (\emph{warning}: not the interest rate of Chapters 5--6) \\
 $A(r),\ B(r)$ & drift and diffusion of the income Fokker--Planck equation
-  (sign convention: $\frac{d}{dt}\langle r\rangle=-\langle A\rangle$) \\
+  (sign convention: $E[dr\mid r]=-A(r)\,dt$ away from a reflecting boundary) \\
 $T_r = B_0/A_0$ & effective temperature of income (Boltzmann regime) \\
 $\alpha = 1 + a/b$ & Pareto exponent of the income CCDF tail \\
 \hline

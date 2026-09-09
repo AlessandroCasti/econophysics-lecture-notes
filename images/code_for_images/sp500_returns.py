@@ -13,7 +13,7 @@ Outputs:
 """
 import csv
 from datetime import date
-from math import erf
+from math import erfc
 from pathlib import Path
 
 import numpy as np
@@ -52,7 +52,7 @@ ccdf = 1.0 - np.arange(1, len(za) + 1) / len(za)
 mask = ccdf > 0
 
 x = np.logspace(np.log10(0.1), np.log10(za.max()), 200)
-gauss_ccdf = np.array([1.0 - erf(v / np.sqrt(2.0)) for v in x])  # P(|Z|>x)
+gauss_ccdf = np.array([erfc(v / np.sqrt(2.0)) for v in x])  # P(|Z|>x)
 
 fig, ax = plt.subplots(figsize=(4.6, 3.6))
 ax.loglog(za[mask], ccdf[mask], ".", color=BLUE, ms=3,
@@ -60,7 +60,7 @@ ax.loglog(za[mask], ccdf[mask], ".", color=BLUE, ms=3,
 ax.loglog(x, gauss_ccdf, color=GRAY, ls="--", lw=1.1, label="Gaussian")
 xg = np.logspace(np.log10(2.5), np.log10(za.max()), 50)
 ax.loglog(xg, 0.35 * xg**-3.0, color=RED, lw=1.1,
-          label=r"$\propto |z|^{-3}$")
+          label=r"guide: $\propto |z|^{-3}$")
 ax.set_xlabel(r"$|z|$ (normalized return)")
 ax.set_ylabel(r"$P_>(|z|)$")
 ax.set_xlim(0.1, za.max() * 1.5)

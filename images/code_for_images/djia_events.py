@@ -31,13 +31,14 @@ ax.set_ylabel("DJIA (points)")
 
 events = [
     (date(2018, 12, 24), 21792, "US--China trade\ndispute", date(2017, 9, 1), 15500),
-    (date(2020, 3, 23), 18592, "COVID-19 becomes\na global pandemic", date(2019, 6, 1), 12800),
-    (date(2022, 9, 30), 28726, "Fed starts a series\nof interest rate hikes", date(2021, 10, 1), 21000),
+    (date(2020, 3, 23), 18592, "March 2020\nsell-off", date(2019, 6, 1), 12800),
+    (date(2022, 9, 30), 28726, "2022 monetary\ntightening", date(2021, 10, 1), 21000),
 ]
 for xd, yv, label, tx, ty in events:
+    yv = closes[dates.index(xd)]
     ax.annotate(label, xy=(xd, yv), xytext=(tx, ty), fontsize=8,
                 arrowprops=dict(arrowstyle="->", lw=0.7))
-ax.set_ylim(10000, 48000)
+ax.set_ylim(10000, max(48000, max(closes)*1.07))
 
 out = here.parent / "djia_events.pdf"
 fig.savefig(out)

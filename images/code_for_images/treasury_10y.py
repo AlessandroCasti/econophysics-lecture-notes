@@ -35,7 +35,7 @@ ax.annotate("Volcker peak\n(Sep 1981, 15.3%)",
             xy=(date(1981, 9, 1), 15.3), xytext=(date(1990, 1, 1), 13.5),
             fontsize=8.5, arrowprops=dict(arrowstyle="->", lw=0.7))
 ax.annotate("post-2008 / QE era",
-            xy=(date(2016, 7, 1), 1.5), xytext=(date(1998, 1, 1), 3.6),
+            xy=(date(2016, 7, 1), 1.5), xytext=(date(1995, 1, 1), 8.0),
             fontsize=8.5, arrowprops=dict(arrowstyle="->", lw=0.7))
 
 out = here.parent / "treasury_10y.pdf"

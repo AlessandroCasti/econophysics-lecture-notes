@@ -34,7 +34,7 @@ ax.text(t0, n_paths * offset - 0.6, r"$X(t_0)$", color=RED, ha="center",
 ax.annotate("", xy=(1.0, -1.9), xytext=(0.0, -1.9),
             arrowprops=dict(arrowstyle="->", lw=0.8))
 ax.text(0.5, -2.35, r"$t$", fontsize=10, ha="center")
-ax.text(1.045, (n_paths - 1) * offset / 2, "ensemble\n(phase space)",
+ax.text(1.045, (n_paths - 1) * offset / 2, "ensemble",
         fontsize=9, color=GRAY, va="center")
 
 ax.set_xlim(-0.12, 1.25)
