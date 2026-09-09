@@ -1,0 +1,34 @@
+#!/bin/bash
+# Build in a disposable directory; publish only a successfully compiled PDF.
+set -euo pipefail
+
+project_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+cd -- "$project_dir"
+
+# MacTeX is not always on the PATH of an editor's terminal.
+if ! command -v latexmk >/dev/null 2>&1 && [[ -x /Library/TeX/texbin/latexmk ]]; then
+    export PATH="/Library/TeX/texbin:$PATH"
+fi
+for program in latexmk xelatex biber; do
+    if ! command -v "$program" >/dev/null 2>&1; then
+        printf 'Missing %s. Install MacTeX (or a TeX distribution with XeLaTeX and Biber).\n' "$program" >&2
+        exit 1
+    fi
+done
+
+build_dir="$(mktemp -d "${TMPDIR:-/tmp}/econophysics-build.XXXXXX")"
+trap 'rm -rf -- "$build_dir"' EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
+mkdir -p "$build_dir/chapters" "$build_dir/frontmatter"
+
+printf 'Compiling lecture notes…\n'
+if latexmk -xelatex -interaction=nonstopmode -halt-on-error -file-line-error \
+    -outdir="$build_dir" main.tex >"$build_dir/build-output.txt" 2>&1; then
+    cp -- "$build_dir/main.pdf" "$project_dir/econophysics-lecture-notes.pdf"
+    printf 'Done: %s/econophysics-lecture-notes.pdf\n' "$project_dir"
+else
+    printf '\nCompilation failed. The previous PDF has been kept.\n' >&2
+    tail -n 80 "$build_dir/build-output.txt" >&2
+    exit 1
+fi

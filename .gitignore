@@ -14,6 +14,9 @@
 *.nav
 *.snm
 *.bcf
+*.xdv
+__pycache__/
+*.pyc
 
 
 # OS files
@@ -36,4 +39,6 @@ NOTES.md
 
 notes_raw
 
-
+REVIEW_2026-09-06.md
+AGENTS.md
+StyleMD/
